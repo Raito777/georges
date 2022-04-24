@@ -1,6 +1,5 @@
-
 #include <SDL2/SDL.h>
-#include "../fakesdlimage.h"
+#include "../textures/fakesdlimage.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdlib.h>
@@ -8,18 +7,24 @@
 #include <math.h>
 #include <time.h>
 
-#include "fonctions.h"
+#include "headers/joueur.h"
+#include "headers/couleurs.h"
+#include "headers/systeme.h"
+#include "headers/plateforme.h"
 
 
-void deplace(int *loop, double *x, double *y, double *z){
+void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme *plateforme){
 
 SDL_Event e;
+
+float step = 0.02;
+
 while(SDL_PollEvent(&e)) 
 {
     /* L'utilisateur ferme la fenetre : */
     if(e.type == SDL_QUIT) 
     {
-        loop = 0;
+        *gameLoop = 0;
         break;
     }
 
@@ -27,23 +32,34 @@ while(SDL_PollEvent(&e))
 
         switch(e.key.keysym.sym){
             case SDLK_ESCAPE:
-                loop = 0;
+                *gameLoop = 0;
                 break;
             case SDLK_q:
-                x--;
+                setVelocite(plateforme, step);
                 break;
             case SDLK_d:
-                x++;
+                setVelocite(plateforme, -step);
+                
                 break;
             case SDLK_z:
-                y++;
+                (*joueur).y += 0.4;
+                break;
+            case SDLK_s:
+                (*joueur).y -= 0.4;
                 break;
             default:
                 break;
         }
+       // printf("velocite %f : \n", (*plateforme).velocite);
 
     }
-    
+
+    if(e.type == SDL_KEYUP){
+        
+        resetVelocite(plateforme, step);
+
+    }
+
     switch(e.type) 
     {
         case SDL_WINDOWEVENT:

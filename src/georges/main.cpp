@@ -1,5 +1,5 @@
 #include <SDL2/SDL.h>
-#include "../fakesdlimage.h"
+#include "../textures/fakesdlimage.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdlib.h>
@@ -7,63 +7,21 @@
 #include <math.h>
 #include <time.h>
 
-#include "fonctions.h"
-
-
-/* Dimensions initiales et titre de la fenetre */
-static const unsigned int WINDOW_WIDTH = 800;
-static const unsigned int WINDOW_HEIGHT = 600;
-static const char WINDOW_TITLE[] = "TD04 Minimal";
-
-/* Espace fenetre virtuelle */
-static const float GL_VIEW_SIZE = 150.;
-
-/* Nombre minimal de millisecondes separant le rendu de deux images */
-static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
-
-static const int CIRCLE_SUBDIVS = 2<<5;
+#include "headers/joueur.h"
+#include "headers/couleurs.h"
+#include "headers/systeme.h"
+#include "headers/plateforme.h"
 
 
 time_t rawtime;
 struct tm* timeinfo;
 
-int  *loop;
-double  *x = 0;
-double  *y = 0;
-double  *z = 0;
-float color = 0;
 
-void drawCircle(int filled);
-
-void drawSquare(int filled);
-
-void onWindowResized(unsigned int width, unsigned int height)
-{ 
-    float aspectRatio = width / (float) height;
-
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    if( aspectRatio > 1) 
-    {
-        gluOrtho2D(
-        -GL_VIEW_SIZE / 2. * aspectRatio, GL_VIEW_SIZE / 2. * aspectRatio, 
-        -GL_VIEW_SIZE / 2., GL_VIEW_SIZE / 2.);
-    }
-    else
-    {
-        gluOrtho2D(
-        -GL_VIEW_SIZE / 2., GL_VIEW_SIZE / 2.,
-        -GL_VIEW_SIZE / 2. / aspectRatio, GL_VIEW_SIZE / 2. / aspectRatio);
-    }
-}
 
 
 int main(int argc, char** argv) 
 {
     /* Initialisation de la SDL */
-
-    *loop = 1;
 
     if(SDL_Init(SDL_INIT_VIDEO) < 0) 
     {
@@ -124,27 +82,39 @@ int main(int argc, char** argv)
 
   
     /* Boucle principale */
+    int gameLoop = 1;
 
-    while(*loop) 
+    ColorRGB couleurPlateforme = createColor(0.8,0.8,1);
+
+    ColorRGB couleurJoueur = createColor(0.7,0.4,0.2);
+
+    Joueur joueur = creerJoueur(0,0,5,15,1,0,couleurJoueur);
+
+    Plateforme plateforme = creerPlateforme(0, 0, 20, 40, 0, 0.15, couleurPlateforme);
+
+    printf("Width : %i, height : %i \n", WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    while(gameLoop) 
     {
+
+        checkEvenements(&gameLoop, &joueur, &plateforme);
+
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        glPushMatrix();
-
-            glScalef(10.,15.,0);
-
-            glColor3f(1,0.7,0);
-            
-            glTranslated(*x,*y,*z);
-
-            drawSquare(1);
-
-        glPopMatrix();
+        afficherPlateforme(plateforme);
+        afficherJoueur(joueur);
 
 
-        deplace(loop, x,y,z);
+
+        if(collision(joueur, plateforme)){
+            setCouleur(&joueur, createColor(1,0.,0.));
+        }else{
+            setCouleur(&joueur, createColor(0.7,0.4,0.2));
+        }
+
+        updatePlateforme(&plateforme);
 
         /* Echange du front et du back buffer : mise a jour de la fenetre */
         SDL_GL_SwapWindow(window);
@@ -169,48 +139,3 @@ int main(int argc, char** argv)
     return EXIT_SUCCESS;
 }
 
-void drawCircle(int filled) 
-{
-    int i = 0;
-
-    if(filled) 
-    {
-        glBegin(GL_TRIANGLE_FAN);
-        glVertex2f(0.0, 0.0);
-    }
-    else 
-    {
-        glBegin(GL_LINE_STRIP);
-    }
-
-    for(i = 0; i < CIRCLE_SUBDIVS; i++) 
-    {
-        glVertex2f( cos(i * (2 * M_PI / (float) CIRCLE_SUBDIVS)), 
-                    sin(i * (2 * M_PI / (float) CIRCLE_SUBDIVS)));
-    }
-    glVertex2f( cos(i * (2 * M_PI / (float) CIRCLE_SUBDIVS)), 
-                sin(i * (2 * M_PI / (float) CIRCLE_SUBDIVS)));
-
-    glEnd();
-}
-
-void drawSquare(int filled) 
-{
-    if(filled) 
-    {
-        glBegin(GL_TRIANGLE_FAN);
-        glVertex2f(0.0, 0.0);
-    }
-    else 
-    {
-        glBegin(GL_LINE_STRIP);
-    }
-
-    glVertex2f( 0.5 , -0.5);
-    glVertex2f( 0.5 , 0.5);
-    glVertex2f( -0.5 , 0.5);
-    glVertex2f( -0.5 , -0.5);
-    glVertex2f( 0.5 , -0.5);
-
-    glEnd();
-}
