@@ -6,8 +6,8 @@
 typedef struct Plateforme {
     float x;
     float y;
-    float hauteur;
     float largeur;
+    float hauteur;
     float velocite;
     float acceleration;
     ColorRGB color;

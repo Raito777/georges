@@ -10,7 +10,6 @@
 #include "headers/systeme.h"
 
 
-
 void drawCircle(int filled) 
 {
     int i = 0;

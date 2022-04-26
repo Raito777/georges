@@ -37,15 +37,8 @@ void afficherJoueur(Joueur joueur){
 }
 
 bool collision(Joueur joueur, Plateforme plateforme){
-    
-    if((joueur.x >= plateforme.x+plateforme.largeur)
-    ||(joueur.x + joueur.largeur <= plateforme.x)
-    ||(joueur.y >= plateforme.y+plateforme.hauteur)
-    ||(joueur.y + joueur.hauteur <= plateforme.y)){
-        return false;
-    }else{
-        return true;
-    }
+
+    return joueur.x - joueur.largeur/2 < plateforme.x + plateforme.largeur/2 && joueur.x + joueur.largeur/2 > plateforme.x - plateforme.largeur/2 && joueur.y-joueur.hauteur/2 < plateforme.y+plateforme.hauteur/2 && joueur.y+joueur.hauteur/2 > plateforme.y-plateforme.hauteur/2;
 
 }
 

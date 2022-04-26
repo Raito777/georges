@@ -32,7 +32,7 @@ void afficherPlateforme(Plateforme plateforme){
 
             glTranslated(plateforme.x,plateforme.y,0);
 
-            glScalef(plateforme.hauteur,plateforme.largeur,0);
+            glScalef(plateforme.largeur,plateforme.hauteur,0);
 
             glColor3f(plateforme.color.r,plateforme.color.g,plateforme.color.b);
             
