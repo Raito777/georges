@@ -9,18 +9,29 @@ typedef struct Joueur {
     float y;
     float largeur;
     float hauteur;
-    float vitesse;
+    float velociteSaut;
+    float hauteurSaut;
+    int nbSaut;
+    int nbSautMax;
     int aFini;
     ColorRGB color;
 
 } Joueur;
 
-Joueur creerJoueur(float x, float y, float largeur, float hauteur, float vitesse, int aFini, ColorRGB color);
+Joueur creerJoueur(float x, float y, float largeur, float hauteur, float velociteSaut, int aFini, ColorRGB color);
 
 void afficherJoueur(Joueur joueur);
 
 bool collision(Joueur joueur, Plateforme plateforme);
 
 void setCouleur(Joueur * joueur, ColorRGB color);
+
+void gravite(Plateforme *plateforme, Joueur *unJoueur, float deltaTme);
+
+void saut(Joueur *unJoueur, float deltaTime);
+
+void updateJoueur(Joueur * joueur, Plateforme * plateforme, float deltaTime);
+
+void setvelociteSaut(Joueur *joueur);
 
 #endif /* JOUEUR_H */

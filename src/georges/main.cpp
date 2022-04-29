@@ -2,6 +2,7 @@
 #include "../textures/fakesdlimage.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -16,7 +17,11 @@
 time_t rawtime;
 struct tm* timeinfo;
 
+float oldTimeSinceStart = 0;
+float deltaTime = 0;
 
+const int FPS = 60;
+const int FRAMEDELAY = 1000 / FPS;
 
 
 int main(int argc, char** argv) 
@@ -88,12 +93,10 @@ int main(int argc, char** argv)
 
     ColorRGB couleurJoueur = createColor(0.7,0.4,0.2);
 
-    Joueur joueur = creerJoueur(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,5,15,1,0,couleurJoueur);
+    Joueur joueur = creerJoueur(WINDOW_WIDTH/2,WINDOW_HEIGHT/2+50,5,15,1,0,couleurJoueur);
 
 
-    Plateforme plateforme = creerPlateforme(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 20, 40, 0, 0.15, couleurPlateforme);
-
-    Plateforme hitbox = creerPlateforme(plateforme.y+plateforme.hauteur, plateforme.x+plateforme.largeur, plateforme.largeur, plateforme.hauteur, 0, 0.15, createColor(0,1,0));
+    Plateforme plateforme = creerPlateforme(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 200, 60, 0, 100, couleurPlateforme);
 
 
     printf("Width : %i, height : %i \n", WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -101,7 +104,18 @@ int main(int argc, char** argv)
     while(gameLoop) 
     {
 
-        checkEvenements(&gameLoop, &joueur, &plateforme);
+        float startTime = (float)SDL_GetTicks()/1000.f;
+
+        deltaTime = startTime - oldTimeSinceStart;
+        oldTimeSinceStart = startTime;
+
+        if(FRAMEDELAY > deltaTime){
+            SDL_Delay(FRAMEDELAY - deltaTime);
+        }
+
+        printf("frame : %f, \n", deltaTime*1000.f);
+
+        checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
 
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_MODELVIEW);
@@ -109,13 +123,9 @@ int main(int argc, char** argv)
 
         afficherPlateforme(plateforme);
 
-        afficherPlateforme(hitbox);
-
         afficherJoueur(joueur);
 
-
-        printf("Width : %f, height : %f \n", joueur.largeur, joueur.hauteur);
-
+        //printf("Width : %f, height : %f \n", joueur.largeur, joueur.hauteur);
 
         if(collision(joueur, plateforme)){
             setCouleur(&joueur, createColor(1,0.,0.));
@@ -123,7 +133,9 @@ int main(int argc, char** argv)
             setCouleur(&joueur, createColor(0.7,0.4,0.2));
         }
 
-        updatePlateforme(&plateforme);
+        updateJoueur(&joueur, &plateforme, deltaTime);
+        
+        updatePlateforme(&plateforme, deltaTime);
 
         /* Echange du front et du back buffer : mise a jour de la fenetre */
         SDL_GL_SwapWindow(window);

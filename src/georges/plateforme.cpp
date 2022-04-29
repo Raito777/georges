@@ -20,9 +20,9 @@ Plateforme creerPlateforme(float x, float y, float largeur, float hauteur, float
 
 }
 
-void updatePlateforme(Plateforme *plateforme){
+void updatePlateforme(Plateforme *plateforme, float deltaTime){
 
-    deplacerPlateforme(plateforme);
+    deplacerPlateforme(plateforme, deltaTime);
 
 }
 
@@ -42,9 +42,9 @@ void afficherPlateforme(Plateforme plateforme){
 
 }
 
-void deplacerPlateforme(Plateforme *plateforme){
+void deplacerPlateforme(Plateforme *plateforme, float deltaTime){
 
-    (*plateforme).x += (*plateforme).velocite;
+    (*plateforme).x += (*plateforme).velocite * deltaTime;
 
 }
 
@@ -86,3 +86,4 @@ void resetVelocite(Plateforme *plateforme, float step){
         (*plateforme).velocite = 0;
 
 }
+

@@ -12,9 +12,9 @@
 #include "headers/couleurs.h"
 #include "headers/systeme.h"
 
-Joueur creerJoueur(float x, float y, float largeur, float hauteur, float vitesse, int aFini, ColorRGB color){
+Joueur creerJoueur(float x, float y, float largeur, float hauteur, float velociteSaut, int aFini, ColorRGB color){
 
-    Joueur newJoueur = {x, y, largeur, hauteur, vitesse, aFini, color};
+    Joueur newJoueur = {x, y, largeur, hauteur, 0, 200, 0, 2, aFini, color};
 
     return newJoueur;
 
@@ -36,6 +36,13 @@ void afficherJoueur(Joueur joueur){
 
 }
 
+void updateJoueur(Joueur * joueur, Plateforme * plateforme, float deltaTime){
+
+    gravite(plateforme, joueur, deltaTime);
+    saut(joueur, deltaTime);
+
+}
+
 bool collision(Joueur joueur, Plateforme plateforme){
 
     return joueur.x - joueur.largeur/2 < plateforme.x + plateforme.largeur/2 && joueur.x + joueur.largeur/2 > plateforme.x - plateforme.largeur/2 && joueur.y-joueur.hauteur/2 < plateforme.y+plateforme.hauteur/2 && joueur.y+joueur.hauteur/2 > plateforme.y-plateforme.hauteur/2;
@@ -50,4 +57,30 @@ float dist(float x1, float y1, float x2, float y2){
 
 void setCouleur(Joueur * joueur, ColorRGB color){
     (*joueur).color = color;
+}
+
+void gravite(Plateforme *plateforme, Joueur *joueur, float deltaTime){
+   (*joueur).y -= 150 * deltaTime;
+   if(collision(*joueur, *plateforme)){
+      (*joueur).y +=  150 * deltaTime; 
+      (*joueur).nbSaut = 0;
+   }
+}
+
+void saut(Joueur *joueur, float deltaTime){
+
+     (*joueur).y += (*joueur).velociteSaut * deltaTime;
+
+}
+
+void setvelociteSaut(Joueur *joueur){
+    if((*joueur).nbSaut < (*joueur).nbSautMax){
+        if((*joueur).velociteSaut <= (*joueur).hauteurSaut){
+            (*joueur).velociteSaut += 20;
+        }else{
+            (*joueur).velociteSaut = 0;
+        }
+    }
+
+
 }

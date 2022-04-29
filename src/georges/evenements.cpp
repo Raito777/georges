@@ -13,11 +13,12 @@
 #include "headers/plateforme.h"
 
 
-void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme *plateforme){
+void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme *plateforme, float deltaTime){
 
 SDL_Event e;
 
-float step = 0.02;
+float step = 2;
+
 
 while(SDL_PollEvent(&e)) 
 {
@@ -42,10 +43,9 @@ while(SDL_PollEvent(&e))
                 
                 break;
             case SDLK_z:
-                (*joueur).y += 0.4;
+                setvelociteSaut(joueur);
                 break;
             case SDLK_s:
-                (*joueur).y -= 0.4;
                 break;
             default:
                 break;
