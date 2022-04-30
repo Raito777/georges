@@ -14,7 +14,7 @@
 
 Joueur creerJoueur(float x, float y, float largeur, float hauteur, float velociteSaut, int aFini, ColorRGB color){
 
-    Joueur newJoueur = {x, y, largeur, hauteur, 0, 200, 0, 2, aFini, color};
+    Joueur newJoueur = {x, y, largeur, hauteur, 0, 500, 0, 1, aFini, color};
 
     return newJoueur;
 
@@ -75,12 +75,15 @@ void saut(Joueur *joueur, float deltaTime){
 
 void setvelociteSaut(Joueur *joueur){
     if((*joueur).nbSaut < (*joueur).nbSautMax){
-        if((*joueur).velociteSaut <= (*joueur).hauteurSaut){
-            (*joueur).velociteSaut += 20;
-        }else{
+
+        (*joueur).nbSaut += 1;
+
+        (*joueur).velociteSaut += 400;
+                
+        if((*joueur).velociteSaut > (*joueur).hauteurSaut){
             (*joueur).velociteSaut = 0;
         }
+    
     }
-
 
 }

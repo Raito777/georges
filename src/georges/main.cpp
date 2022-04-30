@@ -96,7 +96,7 @@ int main(int argc, char** argv)
     Joueur joueur = creerJoueur(WINDOW_WIDTH/2,WINDOW_HEIGHT/2+50,5,15,1,0,couleurJoueur);
 
 
-    Plateforme plateforme = creerPlateforme(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 200, 60, 0, 100, couleurPlateforme);
+    Plateforme plateforme = creerPlateforme(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 200, 60, 0, 200, couleurPlateforme);
 
 
     printf("Width : %i, height : %i \n", WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
             SDL_Delay(FRAMEDELAY - deltaTime);
         }
 
-        printf("frame : %f, \n", deltaTime*1000.f);
+        printf("saut : %f, \n", joueur.velociteSaut);
 
         checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
 

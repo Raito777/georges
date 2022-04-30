@@ -17,7 +17,7 @@ void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme *plateforme, floa
 
 SDL_Event e;
 
-float step = 2;
+float step = 30;
 
 
 while(SDL_PollEvent(&e)) 
@@ -44,6 +44,8 @@ while(SDL_PollEvent(&e))
                 break;
             case SDLK_z:
                 setvelociteSaut(joueur);
+                
+
                 break;
             case SDLK_s:
                 break;
@@ -56,7 +58,27 @@ while(SDL_PollEvent(&e))
 
     if(e.type == SDL_KEYUP){
         
-        resetVelocite(plateforme, step);
+        switch(e.key.keysym.sym){
+            case SDLK_ESCAPE:
+                *gameLoop = 0;
+                break;
+            case SDLK_q:
+                resetVelocite(plateforme, step);
+                break;
+            case SDLK_d:
+                resetVelocite(plateforme, step);
+                break;
+            case SDLK_z:
+                (*joueur).nbSaut += 1;
+                (*joueur).velociteSaut = 0;
+                break;
+            case SDLK_s:
+                break;
+            default:
+                break;
+        }
+        //resetVelocite(plateforme, step);
+        
 
     }
 
