@@ -12,7 +12,7 @@
 
 void onWindowResized(unsigned int width, unsigned int height)
 { 
-    float aspectRatio = width / (float) height;
+    //float aspectRatio = width / (float) height;
 
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);

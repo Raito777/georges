@@ -26,11 +26,13 @@ bool collision(Joueur joueur, Plateforme plateforme);
 
 void setCouleur(Joueur * joueur, ColorRGB color);
 
-void gravite(Plateforme *plateforme, Joueur *unJoueur, float deltaTme);
+void gravite(Joueur *unJoueur, float deltaTme);
+
+void checkCollision(Plateforme *plateforme, Joueur *joueur, float deltaTime);
 
 void saut(Joueur *unJoueur, float deltaTime);
 
-void updateJoueur(Joueur * joueur, Plateforme * plateforme, float deltaTime);
+void updateJoueur(Joueur * joueur, float deltaTime);
 
 void setvelociteSaut(Joueur *joueur);
 

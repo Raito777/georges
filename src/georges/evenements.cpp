@@ -13,7 +13,8 @@
 #include "headers/plateforme.h"
 
 
-void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme *plateforme, float deltaTime){
+void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme lvl[], float deltaTime){
+
 
 SDL_Event e;
 
@@ -36,16 +37,19 @@ while(SDL_PollEvent(&e))
                 *gameLoop = 0;
                 break;
             case SDLK_q:
-                setVelocite(plateforme, step);
+                for(int i = 0; i<3; i++){
+                    setVelocite(&lvl[i], step);
+                    //printf("velocite : %d\n", (lvl[i]).velocite);
+                }
+
                 break;
             case SDLK_d:
-                setVelocite(plateforme, -step);
-                
+                for(int i = 0; i<3; i++){
+                    setVelocite(&lvl[i], -step);
+                }
                 break;
             case SDLK_z:
                 setvelociteSaut(joueur);
-                
-
                 break;
             case SDLK_s:
                 break;
@@ -63,10 +67,14 @@ while(SDL_PollEvent(&e))
                 *gameLoop = 0;
                 break;
             case SDLK_q:
-                resetVelocite(plateforme, step);
+                for(int i = 0; i<3; i++){
+                      resetVelocite(&lvl[i], step);
+                }
                 break;
             case SDLK_d:
-                resetVelocite(plateforme, step);
+                for(int i = 0; i<3; i++){
+                      resetVelocite(&lvl[i], step);
+                }
                 break;
             case SDLK_z:
                 (*joueur).nbSaut += 1;
@@ -105,7 +113,7 @@ while(SDL_PollEvent(&e))
         
         /* Touche clavier */
         case SDL_KEYDOWN:
-            printf("touche pressee (code = %d)\n", e.key.keysym.sym);
+            //printf("touche pressee (code = %d)\n", e.key.keysym.sym);
             break;
             
         default:

@@ -36,12 +36,14 @@ void afficherJoueur(Joueur joueur){
 
 }
 
-void updateJoueur(Joueur * joueur, Plateforme * plateforme, float deltaTime){
+void updateJoueur(Joueur * joueur, float deltaTime){
 
-    gravite(plateforme, joueur, deltaTime);
     saut(joueur, deltaTime);
+    gravite(joueur, deltaTime);
 
 }
+
+
 
 bool collision(Joueur joueur, Plateforme plateforme){
 
@@ -59,12 +61,24 @@ void setCouleur(Joueur * joueur, ColorRGB color){
     (*joueur).color = color;
 }
 
-void gravite(Plateforme *plateforme, Joueur *joueur, float deltaTime){
-   (*joueur).y -= 150 * deltaTime;
+void checkCollision(Plateforme *plateforme, Joueur *joueur, float deltaTime){
+
    if(collision(*joueur, *plateforme)){
-      (*joueur).y +=  150 * deltaTime; 
+
+      setVelocite(plateforme, 0);
+      //(*joueur).velociteSaut = 0;
       (*joueur).nbSaut = 0;
+      (*joueur).y += 150 * deltaTime;
+
+
    }
+
+}
+
+void gravite(Joueur *joueur, float deltaTime){
+
+   (*joueur).y -= 150 * deltaTime;
+
 }
 
 void saut(Joueur *joueur, float deltaTime){

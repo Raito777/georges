@@ -22,7 +22,7 @@ void drawCircle(int filled);
 
 void drawSquare(int filled);
 
-void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme *plateforme, float deltaTime);
+void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme lvl[], float deltaTime);
 
 void onWindowResized(unsigned int width, unsigned int height);
 

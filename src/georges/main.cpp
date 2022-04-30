@@ -93,11 +93,16 @@ int main(int argc, char** argv)
 
     ColorRGB couleurJoueur = createColor(0.7,0.4,0.2);
 
-    Joueur joueur = creerJoueur(WINDOW_WIDTH/2,WINDOW_HEIGHT/2+50,5,15,1,0,couleurJoueur);
+    Joueur joueur = creerJoueur(WINDOW_WIDTH/2,WINDOW_HEIGHT/2+100,5,15,1,0,couleurJoueur);
 
 
     Plateforme plateforme = creerPlateforme(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 200, 60, 0, 200, couleurPlateforme);
 
+    Plateforme plateforme1 = creerPlateforme(WINDOW_WIDTH/2-100, WINDOW_HEIGHT/2+100, 200, 60, 0, 200, couleurPlateforme);
+
+    Plateforme plateforme2 = creerPlateforme(WINDOW_WIDTH/2-200, WINDOW_HEIGHT/2-100, 200, 60, 0, 200, couleurPlateforme);
+
+    Plateforme lvl1[3] = {plateforme1, plateforme, plateforme2};
 
     printf("Width : %i, height : %i \n", WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -113,29 +118,44 @@ int main(int argc, char** argv)
             SDL_Delay(FRAMEDELAY - deltaTime);
         }
 
-        printf("saut : %f, \n", joueur.velociteSaut);
+       // printf("velocitesaut : %f, \n", joueur.velociteSaut);
 
-        checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
+        //checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
 
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        afficherPlateforme(plateforme);
+       for(int i = 0; i < 3; i++){
+            
+            afficherPlateforme(lvl1[i]);
+            updatePlateforme(&(lvl1[i]), deltaTime);
 
+            //passer le tableau de plateforme hors de la boucle
+            checkCollision(&(lvl1[i]), &joueur, deltaTime);
+
+        }
+
+        checkEvenements(&gameLoop, &joueur, lvl1, deltaTime);
+
+
+        updateJoueur(&joueur, deltaTime);
         afficherJoueur(joueur);
+
+
+      /*afficherPlateforme(plateforme);
+
+        checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
+
+        updatePlateforme(&plateforme, deltaTime);
+    
+        checkCollision(&plateforme, &joueur, deltaTime);
+
+        updateJoueur(&joueur, deltaTime);*/
 
         //printf("Width : %f, height : %f \n", joueur.largeur, joueur.hauteur);
 
-        if(collision(joueur, plateforme)){
-            setCouleur(&joueur, createColor(1,0.,0.));
-        }else{
-            setCouleur(&joueur, createColor(0.7,0.4,0.2));
-        }
-
-        updateJoueur(&joueur, &plateforme, deltaTime);
-        
-        updatePlateforme(&plateforme, deltaTime);
+            
 
         /* Echange du front et du back buffer : mise a jour de la fenetre */
         SDL_GL_SwapWindow(window);

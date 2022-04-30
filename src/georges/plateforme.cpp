@@ -23,6 +23,7 @@ Plateforme creerPlateforme(float x, float y, float largeur, float hauteur, float
 void updatePlateforme(Plateforme *plateforme, float deltaTime){
 
     deplacerPlateforme(plateforme, deltaTime);
+    //printf("updating %d\n", plateforme);
 
 }
 
@@ -41,6 +42,9 @@ void afficherPlateforme(Plateforme plateforme){
         glPopMatrix();
 
 }
+
+
+
 
 void deplacerPlateforme(Plateforme *plateforme, float deltaTime){
 
@@ -69,7 +73,7 @@ void setVelocite(Plateforme *plateforme, float step){
 
 void resetVelocite(Plateforme *plateforme, float step){
 
-         while((*plateforme).velocite > step || (*plateforme).velocite < -step){
+       /*  while((*plateforme).velocite > step || (*plateforme).velocite < -step){
 
             if((*plateforme).velocite < 0){
                 (*plateforme).velocite *= 0.999;
@@ -81,8 +85,7 @@ void resetVelocite(Plateforme *plateforme, float step){
 
             //printf("ralentit %f : \n", (*plateforme).velocite);
 
-        }
-
+        }*/
         (*plateforme).velocite = 0;
 
 }

@@ -22,7 +22,7 @@ void updatePlateforme(Plateforme *plateforme, float deltaTime);
 
 void afficherPlateforme(Plateforme plateforme);
 
-void deplacerPlateforme(Plateforme *plateform, float deltaTime);
+void deplacerPlateforme(Plateforme *plateforme, float deltaTime);
 
 void setVelocite(Plateforme *plateforme, float velocite);
 
