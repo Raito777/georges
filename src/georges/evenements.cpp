@@ -49,7 +49,9 @@ while(SDL_PollEvent(&e))
                 }
                 break;
             case SDLK_z:
+                (*joueur).nbSaut += 1;
                 setvelociteSaut(joueur);
+           
                 break;
             case SDLK_s:
                 break;
@@ -77,7 +79,6 @@ while(SDL_PollEvent(&e))
                 }
                 break;
             case SDLK_z:
-                (*joueur).nbSaut += 1;
                 (*joueur).velociteSaut = 0;
                 break;
             case SDLK_s:

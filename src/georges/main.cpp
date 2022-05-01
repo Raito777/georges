@@ -118,7 +118,7 @@ int main(int argc, char** argv)
             SDL_Delay(FRAMEDELAY - deltaTime);
         }
 
-       // printf("velocitesaut : %f, \n", joueur.velociteSaut);
+       //printf("velocitesaut : %f, \n", joueur.velociteSaut);
 
         //checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
 

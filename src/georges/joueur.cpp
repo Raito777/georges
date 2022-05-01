@@ -83,21 +83,19 @@ void gravite(Joueur *joueur, float deltaTime){
 
 void saut(Joueur *joueur, float deltaTime){
 
-     (*joueur).y += (*joueur).velociteSaut * deltaTime;
-
+    if((*joueur).nbSaut <= (*joueur).nbSautMax){
+        (*joueur).y += (*joueur).velociteSaut * deltaTime;
+    }
 }
 
 void setvelociteSaut(Joueur *joueur){
-    if((*joueur).nbSaut < (*joueur).nbSautMax){
-
-        (*joueur).nbSaut += 1;
+    
 
         (*joueur).velociteSaut += 400;
                 
         if((*joueur).velociteSaut > (*joueur).hauteurSaut){
             (*joueur).velociteSaut = 0;
+            //printf("velocite 0");
         }
     
-    }
-
 }
