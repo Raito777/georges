@@ -90,8 +90,6 @@ int main(int argc, char** argv)
     /* Boucle principale */
     int gameLoop = 1;
 
-    bool isJumping = false;
-
     ColorRGB couleurPlateforme = createColor(0.8,0.8,1);
 
     ColorRGB couleurJoueur = createColor(0.7,0.4,0.2);
@@ -122,8 +120,11 @@ int main(int argc, char** argv)
             SDL_Delay(FRAMEDELAY - deltaTime);
         }
 
-       //printf("y : %f, \n", joueur.velociteSaut);
-       //printf("velociteSaut : %f, \n", joueur.velociteSaut);
+       //printf("y : %f, \n", joueur.hauteurSaut);
+
+
+
+       //printf("velocite y : %f, \n", joueur.velociteSaut);
 
         //checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
 
@@ -137,13 +138,13 @@ int main(int argc, char** argv)
             
             afficherPlateforme(lvl1[i]);
             updatePlateforme(&(lvl1[i]), &joueur, deltaTime);
-            checkCollision(&(lvl1[i]), &joueur, &isJumping, deltaTime);
+            checkCollision(&(lvl1[i]), &joueur, deltaTime);
             //printf("velocite : %f\n", joueur.velocite);
 
         }
 
         //passer le tableau de plateforme hors de la boucle
-        checkEvenements(&gameLoop, &isJumping, &joueur, lvl1, deltaTime);
+        checkEvenements(&gameLoop, &joueur, lvl1, deltaTime);
 
 
         updateJoueur(&joueur, &camera, deltaTime);

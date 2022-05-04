@@ -14,7 +14,7 @@
 
 Joueur creerJoueur(float x, float y, float largeur, float hauteur, ColorRGB color){
 
-    Joueur newJoueur = {x, y, x, y, x, y, largeur, hauteur, 0, 200, 0, 500, 0, 1, 0, color};
+    Joueur newJoueur = {x, y, x, y, x, y, largeur, hauteur, 0, 300, 0, 500, true, false, 0, 1, 0, color};
 
     return newJoueur;
 
@@ -87,7 +87,7 @@ bool collisionHaut(Joueur joueur, Plateforme plateforme){
     return joueur.y+joueur.hauteur/2 >= plateforme.y-plateforme.hauteur/2;
 }
 
-void checkCollision(Plateforme *plateforme, Joueur *joueur, bool * isJumping, float deltaTime){
+void checkCollision(Plateforme *plateforme, Joueur *joueur, float deltaTime){
 
    if(collision(*joueur, *plateforme)){
 
@@ -97,7 +97,8 @@ void checkCollision(Plateforme *plateforme, Joueur *joueur, bool * isJumping, fl
     if(collisionBas(*joueur, *plateforme)){
         (*joueur).y += 200 * deltaTime;
         (*joueur).nbSaut = 0;
-        (*isJumping) = false;
+        (*joueur).isJumping = true;
+        (*joueur).hauteurSaut = (*joueur).y + 100;
         (*joueur).velociteSaut = 0;
        //printf("collision Bas\n");
     } 
@@ -106,7 +107,7 @@ void checkCollision(Plateforme *plateforme, Joueur *joueur, bool * isJumping, fl
        // printf("collision X\n");
     }
     if(collisionHaut(*joueur, *plateforme)){
-        (*isJumping) = false;
+        //(*joueur).isJumping = false;
         (*joueur).y += -2*(*joueur).velociteSaut * deltaTime;
         //printf("collision X\n");
     }
@@ -117,21 +118,13 @@ void checkCollision(Plateforme *plateforme, Joueur *joueur, bool * isJumping, fl
             (*joueur).velociteSaut = 0;
     }
 */
-   }
-
-}
-
-float dist(float x1, float y1, float x2, float y2){
-
-    return sqrtf((x2-x1)*(x2-x1)+(y2-y1)*y2-y1);
+   }  
 
 }
 
 void setCouleur(Joueur * joueur, ColorRGB color){
     (*joueur).color = color;
 }
-
-
 
 void gravite(Joueur *joueur, float deltaTime){
 
@@ -140,27 +133,26 @@ void gravite(Joueur *joueur, float deltaTime){
 }
 
 void saut(Joueur *joueur, float deltaTime){
-    
-    if((*joueur).nbSaut <= (*joueur).nbSautMax){
-        (*joueur).y += (*joueur).velociteSaut * deltaTime;
-    }
+
+    (*joueur).y += (*joueur).velociteSaut * deltaTime;
+
 }
 
-void setvelociteSaut(Joueur *joueur, bool * isJumping){
-      
-      if((*isJumping)){
+void setvelociteSaut(Joueur *joueur, float step){
 
-        (*joueur).velociteSaut += 450;
+    if((*joueur).y >= (*joueur).hauteurSaut){
+        (*joueur).isJumping = false;
+    } 
 
-        if((*joueur).velociteSaut >= (*joueur).hauteurSaut){
-            (*isJumping) = false;
-        }
+    if((*joueur).isJumping){
 
-      }else if(!(*isJumping)){
+        (*joueur).velociteSaut += step;
 
-        (*joueur).velociteSaut = 0;
+    }else if((*joueur).isJumping == false){
+        
+        (*joueur).velociteSaut *= 0.90;
 
-      }
+    }
         
 }
 
@@ -168,10 +160,16 @@ void deplacerJoueur(Joueur *joueur, float deltaTime){
 
     (*joueur).x += -(*joueur).velocite * deltaTime;
 
+    if(!(*joueur).isMooving){
+
+        resetVelocite(joueur, deltaTime);
+        
+    }
+
 }
 
 void setVelocite(Joueur *joueur, float step){
-
+    (*joueur).isMooving = true;
     if(step < 0){
         if((*joueur).velocite <= -(*joueur).acceleration){
             (*joueur).velocite = -(*joueur).acceleration;
@@ -189,27 +187,23 @@ void setVelocite(Joueur *joueur, float step){
  
 }
 
-void resetVelocite(Joueur *joueur, float step){
+void resetVelocite(Joueur *joueur, float deltaTime){
 
-       /*  while((*plateforme).velocite > step || (*plateforme).velocite < -step){
+    (*joueur).isMooving = false;
 
-            if((*plateforme).velocite < 0){
-                (*plateforme).velocite *= 0.999;
-            }
+    if((*joueur).velocite != 0){
 
-            if((*plateforme).velocite > 0){
-                (*plateforme).velocite *= 0.999;
-            }
+        (*joueur).velocite *= 0.95;
 
-            //printf("ralentit %f : \n", (*plateforme).velocite);
+    }
 
-        }*/
+    if((*joueur).velocite < 0.01 && (*joueur).velocite > 0.01){
+
         (*joueur).velocite = 0;
 
+    }
+
 }
-
-
-
 
 void respawn(Joueur *joueur){
     (*joueur).y = 500;

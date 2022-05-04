@@ -13,11 +13,36 @@
 #include "headers/plateforme.h"
 
 
-void checkEvenements(int *gameLoop, bool *isJumping, Joueur *joueur, Plateforme lvl[], float deltaTime){
+void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme lvl[], float deltaTime){
 
 SDL_Event e;
 
-float step = 100;
+float step = 10;
+float stepSaut = 80;
+
+/*const Uint8* keystate = SDL_GetKeyboardState(NULL);
+
+if (keystate[SDL_SCANCODE_Z]) {
+    
+    (*joueur).nbSaut += 1;
+    (*joueur).isJumping = true;
+    printf("saut\n");
+    setvelociteSaut(joueur, stepSaut);
+}*/
+
+const Uint8 *state = SDL_GetKeyboardState(NULL); 
+
+if (state[SDL_SCANCODE_W]) { 
+    (*joueur).nbSaut += 1;
+    setvelociteSaut(joueur, stepSaut);
+}
+if (state[SDL_SCANCODE_A]) { 
+    setVelocite(joueur, step);
+}
+if (state[SDL_SCANCODE_D]) { 
+    setVelocite(joueur, -step);
+}
+
 
 
 while(SDL_PollEvent(&e)) 
@@ -37,21 +62,18 @@ while(SDL_PollEvent(&e))
                 break;
             case SDLK_q:
                 setVelocite(joueur, step);
-
-                //printf("velocite : %d\n", (lvl[i]).velocite);
                 break;
+
             case SDLK_d:
                 setVelocite(joueur, -step);
-
                 break;
+
             case SDLK_z:
-                
-                (*joueur).nbSaut += 1;
 
-                (*isJumping) = true;
-                setvelociteSaut(joueur, isJumping);
 
+                //setvelociteSaut(joueur, stepSaut);
                 break;
+
             case SDLK_s:
                 break;
             default:
@@ -68,14 +90,14 @@ while(SDL_PollEvent(&e))
                 *gameLoop = 0;
                 break;
             case SDLK_q:
-                      resetVelocite(joueur, step);
+                      resetVelocite(joueur, deltaTime);
                 break;
             case SDLK_d:
-                      resetVelocite(joueur, step);
+                      resetVelocite(joueur, deltaTime);
                 break;
             case SDLK_z:
-                        (*isJumping) = false;
-                        (*joueur).velociteSaut = 0;
+                      (*joueur).isJumping = false;
+                      (*joueur).velociteSaut = 0;
                 break;
             case SDLK_s:
                 break;
@@ -109,7 +131,7 @@ while(SDL_PollEvent(&e))
         
         /* Touche clavier */
         case SDL_KEYDOWN:
-            //printf("touche pressee (code = %d)\n", e.key.keysym.sym);
+            ///printf("touche pressee (code = %d)\n", e.key.keysym.sym);
             break;
             
         default:

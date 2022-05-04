@@ -18,6 +18,8 @@ typedef struct Joueur {
     float acceleration;
     float velociteSaut;
     float hauteurSaut;
+    bool isJumping;
+    bool isMooving;
     int nbSaut;
     int nbSautMax;
     int aFini;
@@ -73,7 +75,7 @@ void saut(Joueur *unJoueur, float deltaTime);
 
 void updateJoueur(Joueur * joueur, Camera * camera, float deltaTime);
 
-void setvelociteSaut(Joueur *joueur, bool * isJumping);
+void setvelociteSaut(Joueur *joueur, float step);
 
 void respawn(Joueur *joueur);
 

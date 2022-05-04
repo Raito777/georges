@@ -12,7 +12,7 @@
 
 void onWindowResized(unsigned int width, unsigned int height)
 { 
-    //float aspectRatio = width / (float) height;
+    float aspectRatio = width / (float) height;
 
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
@@ -27,7 +27,7 @@ void onWindowResized(unsigned int width, unsigned int height)
     // Camera will be centered on (0,0)
     //glOrtho( -width/2.f, width/2.f, -height/2.f, height/2.f, -1, 1 );
 
-    /*if( aspectRatio > 1) 
+   /* if( aspectRatio > 1) 
     {
         gluOrtho2D(
         -GL_VIEW_SIZE / 2. * aspectRatio, GL_VIEW_SIZE / 2. * aspectRatio, 
@@ -38,5 +38,5 @@ void onWindowResized(unsigned int width, unsigned int height)
         gluOrtho2D(
         -GL_VIEW_SIZE / 2., GL_VIEW_SIZE / 2.,
         -GL_VIEW_SIZE / 2. / aspectRatio, GL_VIEW_SIZE / 2. / aspectRatio);
-    }*/
+    } */
 }
