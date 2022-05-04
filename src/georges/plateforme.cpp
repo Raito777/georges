@@ -12,17 +12,19 @@
 #include "headers/systeme.h"
 #include "headers/plateforme.h"
 
-Plateforme creerPlateforme(float x, float y, float largeur, float hauteur, float velocite, float acceleration, ColorRGB color){
+Plateforme creerPlateforme(float x, float y, float largeur, float hauteur, ColorRGB color){
 
-    Plateforme newPlateformes = {x, y, largeur, hauteur, velocite, acceleration, color};
+    Plateforme newPlateformes = {x, y, largeur, hauteur, color};
 
     return newPlateformes;
 
 }
 
-void updatePlateforme(Plateforme *plateforme, float deltaTime){
+void updatePlateforme(Plateforme *plateforme, Joueur * joueur, float deltaTime){
 
-    deplacerPlateforme(plateforme, deltaTime);
+    
+      //  deplacerPlateforme(plateforme, joueur, deltaTime);
+    
     //printf("updating %d\n", plateforme);
 
 }
@@ -46,47 +48,10 @@ void afficherPlateforme(Plateforme plateforme){
 
 
 
-void deplacerPlateforme(Plateforme *plateforme, float deltaTime){
+void deplacerPlateforme(Plateforme *plateforme, Joueur *joueur, float deltaTime){
 
-    (*plateforme).x += (*plateforme).velocite * deltaTime;
-
-}
-
-void setVelocite(Plateforme *plateforme, float step){
-
-    if(step < 0){
-        if((*plateforme).velocite <= -(*plateforme).acceleration){
-        (*plateforme).velocite = -(*plateforme).acceleration;
-        }else{
-            (*plateforme).velocite += step;
-        }
-    }
-    if(step > 0){
-    if((*plateforme).velocite >= (*plateforme).acceleration){
-        (*plateforme).velocite = (*plateforme).acceleration;
-        }else{
-            (*plateforme).velocite += step;
-        }
-    }
- 
-}
-
-void resetVelocite(Plateforme *plateforme, float step){
-
-       /*  while((*plateforme).velocite > step || (*plateforme).velocite < -step){
-
-            if((*plateforme).velocite < 0){
-                (*plateforme).velocite *= 0.999;
-            }
-
-            if((*plateforme).velocite > 0){
-                (*plateforme).velocite *= 0.999;
-            }
-
-            //printf("ralentit %f : \n", (*plateforme).velocite);
-
-        }*/
-        (*plateforme).velocite = 0;
+    (*plateforme).x += (*joueur).velocite * deltaTime;
 
 }
+
 

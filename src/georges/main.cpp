@@ -8,10 +8,11 @@
 #include <math.h>
 #include <time.h>
 
+#include "headers/plateforme.h"
+
 #include "headers/joueur.h"
 #include "headers/couleurs.h"
 #include "headers/systeme.h"
-#include "headers/plateforme.h"
 
 
 time_t rawtime;
@@ -89,18 +90,21 @@ int main(int argc, char** argv)
     /* Boucle principale */
     int gameLoop = 1;
 
+    bool isJumping = false;
+
     ColorRGB couleurPlateforme = createColor(0.8,0.8,1);
 
     ColorRGB couleurJoueur = createColor(0.7,0.4,0.2);
 
-    Joueur joueur = creerJoueur(WINDOW_WIDTH/2,WINDOW_HEIGHT/2+100,5,15,1,0,couleurJoueur);
+    Joueur joueur = creerJoueur(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,5,15,couleurJoueur);
 
+    Camera camera = creerCamera(joueur.x, joueur.y);
 
-    Plateforme plateforme = creerPlateforme(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 200, 60, 0, 200, couleurPlateforme);
+    Plateforme plateforme = creerPlateforme(WINDOW_WIDTH/2, WINDOW_HEIGHT/2-300, 200, 60, couleurPlateforme);
 
-    Plateforme plateforme1 = creerPlateforme(WINDOW_WIDTH/2-100, WINDOW_HEIGHT/2+100, 200, 60, 0, 200, couleurPlateforme);
+    Plateforme plateforme1 = creerPlateforme(WINDOW_WIDTH/2-100, WINDOW_HEIGHT/2-200, 200, 60, couleurPlateforme);
 
-    Plateforme plateforme2 = creerPlateforme(WINDOW_WIDTH/2-200, WINDOW_HEIGHT/2-100, 200, 60, 0, 200, couleurPlateforme);
+    Plateforme plateforme2 = creerPlateforme(WINDOW_WIDTH/2-200, WINDOW_HEIGHT/2-100, 200, 60, couleurPlateforme);
 
     Plateforme lvl1[3] = {plateforme1, plateforme, plateforme2};
 
@@ -118,7 +122,8 @@ int main(int argc, char** argv)
             SDL_Delay(FRAMEDELAY - deltaTime);
         }
 
-       //printf("velocitesaut : %f, \n", joueur.velociteSaut);
+       //printf("y : %f, \n", joueur.velociteSaut);
+       //printf("velociteSaut : %f, \n", joueur.velociteSaut);
 
         //checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
 
@@ -126,27 +131,32 @@ int main(int argc, char** argv)
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
+        cameraTranslate(camera);
+
        for(int i = 0; i < 3; i++){
             
             afficherPlateforme(lvl1[i]);
-            updatePlateforme(&(lvl1[i]), deltaTime);
-
-            //passer le tableau de plateforme hors de la boucle
-            checkCollision(&(lvl1[i]), &joueur, deltaTime);
+            updatePlateforme(&(lvl1[i]), &joueur, deltaTime);
+            checkCollision(&(lvl1[i]), &joueur, &isJumping, deltaTime);
+            //printf("velocite : %f\n", joueur.velocite);
 
         }
 
-        checkEvenements(&gameLoop, &joueur, lvl1, deltaTime);
+        //passer le tableau de plateforme hors de la boucle
+        checkEvenements(&gameLoop, &isJumping, &joueur, lvl1, deltaTime);
 
 
-        updateJoueur(&joueur, deltaTime);
+        updateJoueur(&joueur, &camera, deltaTime);
         afficherJoueur(joueur);
 
+        if(joueur.y <= 0){
+            respawn(&joueur);
+        }
 
       /*afficherPlateforme(plateforme);
 
         checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
-
+Z
         updatePlateforme(&plateforme, deltaTime);
     
         checkCollision(&plateforme, &joueur, deltaTime);

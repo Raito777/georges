@@ -13,12 +13,11 @@
 #include "headers/plateforme.h"
 
 
-void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme lvl[], float deltaTime){
-
+void checkEvenements(int *gameLoop, bool *isJumping, Joueur *joueur, Plateforme lvl[], float deltaTime){
 
 SDL_Event e;
 
-float step = 30;
+float step = 100;
 
 
 while(SDL_PollEvent(&e)) 
@@ -37,21 +36,21 @@ while(SDL_PollEvent(&e))
                 *gameLoop = 0;
                 break;
             case SDLK_q:
-                for(int i = 0; i<3; i++){
-                    setVelocite(&lvl[i], step);
-                    //printf("velocite : %d\n", (lvl[i]).velocite);
-                }
+                setVelocite(joueur, step);
 
+                //printf("velocite : %d\n", (lvl[i]).velocite);
                 break;
             case SDLK_d:
-                for(int i = 0; i<3; i++){
-                    setVelocite(&lvl[i], -step);
-                }
+                setVelocite(joueur, -step);
+
                 break;
             case SDLK_z:
+                
                 (*joueur).nbSaut += 1;
-                setvelociteSaut(joueur);
-           
+
+                (*isJumping) = true;
+                setvelociteSaut(joueur, isJumping);
+
                 break;
             case SDLK_s:
                 break;
@@ -69,17 +68,14 @@ while(SDL_PollEvent(&e))
                 *gameLoop = 0;
                 break;
             case SDLK_q:
-                for(int i = 0; i<3; i++){
-                      resetVelocite(&lvl[i], step);
-                }
+                      resetVelocite(joueur, step);
                 break;
             case SDLK_d:
-                for(int i = 0; i<3; i++){
-                      resetVelocite(&lvl[i], step);
-                }
+                      resetVelocite(joueur, step);
                 break;
             case SDLK_z:
-                (*joueur).velociteSaut = 0;
+                        (*isJumping) = false;
+                        (*joueur).velociteSaut = 0;
                 break;
             case SDLK_s:
                 break;
@@ -87,7 +83,6 @@ while(SDL_PollEvent(&e))
                 break;
         }
         //resetVelocite(plateforme, step);
-        
 
     }
 
@@ -123,3 +118,4 @@ while(SDL_PollEvent(&e))
 }
 
 }
+
