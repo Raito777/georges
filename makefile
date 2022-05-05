@@ -1,6 +1,6 @@
 CC		= gcc
 CFLAGS	= -Wall -O2 -g
-LDFLAGS	= -lSDL2 -lGLU -lGL -lm -lSDL2_image
+LDFLAGS	= -lSDL2 -lGLU -lGL -lm -lSDL2_image -lstdc++ 
 
 
 

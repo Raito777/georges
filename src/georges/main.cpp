@@ -8,12 +8,16 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <iostream>
 
 #include "headers/plateforme.h"
 
 #include "headers/joueur.h"
 #include "headers/couleurs.h"
 #include "headers/systeme.h"
+#include "headers/quadtree.h"
+
+using namespace std;
 
 
 time_t rawtime;
@@ -29,9 +33,12 @@ SDL_Surface *imageTitre = NULL;
 SDL_Surface *windowSurface = NULL;
 
 
-int main(int argc, char** argv) 
+int main(int argc, char** argv)
 {
     /* Initialisation de la SDL */
+
+
+
 
     SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -98,7 +105,7 @@ int main(int argc, char** argv)
         printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
     }
 
-    imageTitre = IMG_Load("titre.png");
+    imageTitre = IMG_Load("textures/titre.png");
 
     if ( NULL == imageTitre )
     {
@@ -107,6 +114,8 @@ int main(int argc, char** argv)
 
     windowSurface = SDL_GetWindowSurface( window );
     /* Boucle principale */
+
+
     int gameLoop = 1;
 
     ColorRGB couleurPlateforme = createColor(0.8,0.8,1);
@@ -128,6 +137,13 @@ int main(int argc, char** argv)
     Plateforme lvl1[tailleLvl1] = {plateforme1, plateforme, plateforme2};
 
     
+    Quad qt(Point(0, WINDOW_HEIGHT), Point(WINDOW_WIDTH, 0));
+
+    qt.insert(&plateforme);
+    qt.insert(&plateforme1);
+    qt.insert(&plateforme2);
+
+
 
     printf("Width : %i, height : %i \n", WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -153,6 +169,10 @@ int main(int argc, char** argv)
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
+
+        if(qt.search(Point(0, 0)) != NULL){
+            cout << "Node a: " << center.search(Point(0, 0))->y << "\n";
+        }
        
         //SDL_RenderDrawRect(renderer, &rectangleTitre);
 
