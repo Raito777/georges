@@ -8,7 +8,7 @@
 /* Dimensions initiales et titre de la fenetre */
 static const unsigned int WINDOW_WIDTH = 800;
 static const unsigned int WINDOW_HEIGHT = 600;
-static const char WINDOW_TITLE[] = "TD04 Minimal";
+static const char WINDOW_TITLE[] = "Georges was alone";
 
 /* Espace fenetre virtuelle */
 static const float GL_VIEW_SIZE = 150.;
@@ -22,7 +22,7 @@ void drawCircle(int filled);
 
 void drawSquare(int filled);
 
-void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme lvl[], float deltaTime);
+void checkEvenements(int *gameLoop, Joueur *joueur, float deltaTime);
 
 void onWindowResized(unsigned int width, unsigned int height);
 

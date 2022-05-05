@@ -1,5 +1,4 @@
 #include <SDL2/SDL.h>
-#include "../textures/fakesdlimage.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdlib.h>
@@ -13,7 +12,7 @@
 #include "headers/plateforme.h"
 
 
-void checkEvenements(int *gameLoop, Joueur *joueur, Plateforme lvl[], float deltaTime){
+void checkEvenements(int *gameLoop, Joueur *joueur, float deltaTime){
 
 SDL_Event e;
 

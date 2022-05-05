@@ -1,8 +1,9 @@
 #include <SDL2/SDL.h>
-#include "../textures/fakesdlimage.h"
+#include <SDL2/SDL_image.h>
+//#include "fakesdlimage.h"
+
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -24,10 +25,16 @@ float deltaTime = 0;
 const int FPS = 60;
 const int FRAMEDELAY = 1000 / FPS;
 
+SDL_Surface *imageTitre = NULL;
+SDL_Surface *windowSurface = NULL;
+
 
 int main(int argc, char** argv) 
 {
     /* Initialisation de la SDL */
+
+    SDL_Init(SDL_INIT_EVERYTHING);
+
 
     if(SDL_Init(SDL_INIT_VIDEO) < 0) 
     {
@@ -83,10 +90,22 @@ int main(int argc, char** argv)
             return EXIT_FAILURE;
         }
     }    
-  
+
     onWindowResized(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-  
+    if( !( IMG_Init( IMG_INIT_PNG ) & IMG_INIT_PNG ) )
+    {
+        printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+    }
+
+    imageTitre = IMG_Load("titre.png");
+
+    if ( NULL == imageTitre )
+    {
+        printf("SDL could not load image! : %s\n", SDL_GetError());
+    }
+
+    windowSurface = SDL_GetWindowSurface( window );
     /* Boucle principale */
     int gameLoop = 1;
 
@@ -104,7 +123,11 @@ int main(int argc, char** argv)
 
     Plateforme plateforme2 = creerPlateforme(WINDOW_WIDTH/2-200, WINDOW_HEIGHT/2-100, 200, 60, couleurPlateforme);
 
-    Plateforme lvl1[3] = {plateforme1, plateforme, plateforme2};
+    int tailleLvl1 = 3;
+
+    Plateforme lvl1[tailleLvl1] = {plateforme1, plateforme, plateforme2};
+
+    
 
     printf("Width : %i, height : %i \n", WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -122,8 +145,6 @@ int main(int argc, char** argv)
 
        //printf("y : %f, \n", joueur.hauteurSaut);
 
-
-
        //printf("velocite y : %f, \n", joueur.velociteSaut);
 
         //checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
@@ -132,9 +153,14 @@ int main(int argc, char** argv)
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        cameraTranslate(camera);
+       
+        //SDL_RenderDrawRect(renderer, &rectangleTitre);
 
-       for(int i = 0; i < 3; i++){
+       //SDL_RenderCopy(renderer, texture, NULL, &rectangleTitre);
+       
+       cameraTranslate(camera);
+
+       for(int i = 0; i < tailleLvl1; i++){
             
             afficherPlateforme(lvl1[i]);
             updatePlateforme(&(lvl1[i]), &joueur, deltaTime);
@@ -143,9 +169,7 @@ int main(int argc, char** argv)
 
         }
 
-        //passer le tableau de plateforme hors de la boucle
-        checkEvenements(&gameLoop, &joueur, lvl1, deltaTime);
-
+        checkEvenements(&gameLoop, &joueur, deltaTime);
 
         updateJoueur(&joueur, &camera, deltaTime);
         afficherJoueur(joueur);
@@ -154,35 +178,12 @@ int main(int argc, char** argv)
             respawn(&joueur);
         }
 
-      /*afficherPlateforme(plateforme);
+        SDL_BlitSurface(imageTitre, NULL, windowSurface, NULL );
 
-        checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
-Z
-        updatePlateforme(&plateforme, deltaTime);
-    
-        checkCollision(&plateforme, &joueur, deltaTime);
-
-        updateJoueur(&joueur, deltaTime);*/
-
-        //printf("Width : %f, height : %f \n", joueur.largeur, joueur.hauteur);
-
-            
-
-        /* Echange du front et du back buffer : mise a jour de la fenetre */
         SDL_GL_SwapWindow(window);
-        
-        /* Boucle traitant les evenements */
- 
 
-        /* Calcul du temps ecoule 
-        Uint32 elapsedTime = SDL_GetTicks() - startTime;
-        Si trop peu de temps s'est ecoule, on met en pause le programme
-        if(elapsedTime < FRAMERATE_MILLISECONDS) 
-        {
-            SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
-        }*/
     }
-
+    SDL_FreeSurface(imageTitre);
     /* Liberation des ressources associees a la SDL */ 
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(window);

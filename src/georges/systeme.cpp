@@ -1,5 +1,4 @@
 #include <SDL2/SDL.h>
-#include "../textures/fakesdlimage.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdlib.h>

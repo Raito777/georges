@@ -1,20 +1,20 @@
 CC		= gcc
 CFLAGS	= -Wall -O2 -g
-LDFLAGS	= -lSDL2 -lGLU -lGL -lm
+LDFLAGS	= -lSDL2 -lGLU -lGL -lm -lSDL2_image
+
 
 
 BINDIR	= bin/
 SRCDIR	= src/
 OBJDIR	= obj/
 
-# Fichiers TD 05
 
-# Fichiers exercice 01a
+# Fichiers
 EXEC_GEORGES= georges.out
+
 OBJ_GEORGES := $(patsubst $(SRCDIR)%.cpp,$(OBJDIR)%.o,$(wildcard $(SRCDIR)georges/*.cpp))
 
-
-# Regles compilation TD 05
+# Regles compilation
 
 all : georges
 
@@ -33,3 +33,5 @@ clean :
 $(OBJDIR)%.o: $(SRCDIR)%.cpp
 	mkdir -p `dirname $@`
 	$(CC) -o $@ -c $< $(CFLAGS)
+
+
