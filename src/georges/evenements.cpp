@@ -10,9 +10,9 @@
 #include "headers/couleurs.h"
 #include "headers/systeme.h"
 #include "headers/plateforme.h"
+#include "headers/level.h"
 
-
-void checkEvenements(int *gameLoop, Joueur *joueur, float deltaTime){
+void checkEvenements(int *gameLoop, Joueur *joueur, Level level, float deltaTime){
 
 SDL_Event e;
 
@@ -66,9 +66,10 @@ while(SDL_PollEvent(&e))
             case SDLK_d:
                 setVelocite(joueur, -step);
                 break;
-
+            case SDLK_TAB:
+                switchJoueur(&level);
+                break;
             case SDLK_z:
-
 
                 //setvelociteSaut(joueur, stepSaut);
                 break;

@@ -22,6 +22,7 @@ typedef struct Joueur {
     bool isMooving;
     int nbSaut;
     int nbSautMax;
+    int id;
     int aFini;
     ColorRGB color;
 
@@ -43,7 +44,7 @@ typedef struct Camera {
 
 } Camera;
 
-Joueur creerJoueur(float x, float y, float largeur, float hauteur, ColorRGB color);
+Joueur creerJoueur(float x, float y, float largeur, float hauteur, int id, ColorRGB color);
 
 Camera creerCamera(float x, float y);
 
@@ -52,6 +53,14 @@ void updateCamera(Camera *camera, Joueur *joueur);
 void afficherJoueur(Joueur joueur);
 
 bool collision(Joueur joueur, Plateforme plateforme);
+
+bool collisionJoueur(Joueur joueur1, Joueur joueur2);
+
+bool collisionJoueurHaut(Joueur joueur, Joueur joueur1);
+
+bool collisionJoueurBas(Joueur joueur, Joueur joueur1);
+
+bool collisionJoueurX(Joueur joueur, Joueur joueur1);
 
 bool collisionX(Joueur joueur, Plateforme plateforme);
 
@@ -70,6 +79,8 @@ void setCouleur(Joueur * joueur, ColorRGB color);
 void gravite(Joueur *unJoueur, float deltaTme);
 
 void checkCollision(Plateforme *plateforme, Joueur *joueur, float deltaTime);
+
+void checkCollisionJoueur(Joueur *joueur, Joueur *joueur1, float deltaTime);
 
 void saut(Joueur *unJoueur, float deltaTime);
 

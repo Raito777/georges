@@ -4,6 +4,7 @@
 
 #include "joueur.h"
 #include "plateforme.h"
+#include "level.h"
 
 /* Dimensions initiales et titre de la fenetre */
 static const unsigned int WINDOW_WIDTH = 800;
@@ -22,7 +23,7 @@ void drawCircle(int filled);
 
 void drawSquare(int filled);
 
-void checkEvenements(int *gameLoop, Joueur *joueur, float deltaTime);
+void checkEvenements(int *gameLoop, Joueur *joueur, Level level, float deltaTime);
 
 void onWindowResized(unsigned int width, unsigned int height);
 

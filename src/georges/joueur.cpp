@@ -12,9 +12,9 @@
 #include "headers/couleurs.h"
 #include "headers/systeme.h"
 
-Joueur creerJoueur(float x, float y, float largeur, float hauteur, ColorRGB color){
+Joueur creerJoueur(float x, float y, float largeur, float hauteur,int id, ColorRGB color){
 
-    Joueur newJoueur = {x, y, x, y, x, y, largeur, hauteur, 0, 300, 0, 500, true, false, 0, 1, 0, color};
+    Joueur newJoueur = {x, y, x, y, x, y, largeur, hauteur, 0, 300, 0, 500, true, false, 0, 1, id, false, color};
 
     return newJoueur;
 
@@ -75,6 +75,24 @@ bool collision(Joueur joueur, Plateforme plateforme){
 
 }
 
+bool collisionJoueur(Joueur joueur1, Joueur joueur2){
+
+    return joueur1.x - joueur1.largeur/2 < joueur2.x + joueur2.largeur/2 && joueur1.x + joueur1.largeur/2 > joueur2.x - joueur2.largeur/2 && joueur1.y-joueur1.hauteur/2 < joueur2.y+joueur2.hauteur/2 && joueur1.y+joueur1.hauteur/2 > joueur2.y-joueur2.hauteur/2;
+
+}
+
+bool collisionJoueurX(Joueur joueur, Joueur plateforme){
+    return joueur.x + joueur.largeur/2 > plateforme.x - plateforme.largeur/2 && joueur.y-joueur.hauteur/2 < plateforme.y+plateforme.hauteur/2 && joueur.y+joueur.hauteur/2 > plateforme.y-plateforme.hauteur/2;
+}
+
+bool collisionJoueurBas(Joueur joueur, Joueur plateforme){
+    return joueur.y-joueur.hauteur/2 <= plateforme.y+plateforme.hauteur/2 && joueur.y-joueur.hauteur/2 >= plateforme.y;
+}
+
+bool collisionJoueurHaut(Joueur joueur, Joueur plateforme){
+    return joueur.y+joueur.hauteur/2 >= plateforme.y-plateforme.hauteur/2;
+}
+
 bool collisionX(Joueur joueur, Plateforme plateforme){
     return joueur.x + joueur.largeur/2 > plateforme.x - plateforme.largeur/2 && joueur.y-joueur.hauteur/2 < plateforme.y+plateforme.hauteur/2 && joueur.y+joueur.hauteur/2 > plateforme.y-plateforme.hauteur/2;
 }
@@ -90,8 +108,6 @@ bool collisionHaut(Joueur joueur, Plateforme plateforme){
 void checkCollision(Plateforme *plateforme, Joueur *joueur, float deltaTime){
 
    if(collision(*joueur, *plateforme)){
-
-
        //printf("collision Partout\n");
 
     if(collisionBas(*joueur, *plateforme)){
@@ -107,19 +123,34 @@ void checkCollision(Plateforme *plateforme, Joueur *joueur, float deltaTime){
        // printf("collision X\n");
     }
     if(collisionHaut(*joueur, *plateforme)){
-        //(*joueur).isJumping = false;
         (*joueur).y += -2*(*joueur).velociteSaut * deltaTime;
         //printf("collision X\n");
     }
-
-    /*while(collision(*joueur, *plateforme)){
-        
-            (*joueur).y += 200 * deltaTime;
-            (*joueur).velociteSaut = 0;
-    }
-*/
    }  
+}
 
+void checkCollisionJoueur(Joueur *plateforme, Joueur *joueur, float deltaTime){
+
+   if(collisionJoueur(*joueur, *plateforme)){
+       //printf("collision Partout\n");
+
+    if(collisionJoueurBas(*joueur, *plateforme)){
+        (*joueur).y += 200 * deltaTime;
+        (*joueur).nbSaut = 0;
+        (*joueur).isJumping = true;
+        (*joueur).hauteurSaut = (*joueur).y + 100;
+        (*joueur).velociteSaut = 0;
+       //printf("collision Bas\n");
+    } 
+    if(collisionJoueurX(*joueur, *plateforme)){
+        (*joueur).velocite = (*joueur).velocite*-1.01;
+       // printf("collision X\n");
+    }
+    if(collisionJoueurHaut(*joueur, *plateforme)){
+        (*joueur).y += -2*(*joueur).velociteSaut * deltaTime;
+        //printf("collision X\n");
+    }
+   }  
 }
 
 void setCouleur(Joueur * joueur, ColorRGB color){
