@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+//#include "../fakesdlimage.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdlib.h>
@@ -7,7 +8,6 @@
 #include <time.h>
 
 #include "headers/systeme.h"
-
 
 void drawCircle(int filled) 
 {
@@ -51,6 +51,27 @@ void drawSquare(int filled)
     glVertex2f( -0.5 , 0.5);
     glVertex2f( -0.5 , -0.5);
     glVertex2f( 0.5 , -0.5);
+
+    glEnd();
+}
+
+void drawTriangle(int filled) 
+{
+    if(filled) 
+    {
+        glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(0.0, 0.0);
+    }
+    else 
+    {
+        glBegin(GL_LINE_STRIP);
+    }
+
+    glVertex2f( 0 , -0.5);
+    glVertex2f( 0.5 , 0.5);
+    glVertex2f(-0.5, 0.5);
+    glVertex2f(0, -0.5);
+
 
     glEnd();
 }

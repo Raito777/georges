@@ -23,6 +23,8 @@ void drawCircle(int filled);
 
 void drawSquare(int filled);
 
+void drawTriangle(int filled);
+
 void checkEvenements(int *gameLoop, Joueur *joueur, Level level, float deltaTime);
 
 void onWindowResized(unsigned int width, unsigned int height);

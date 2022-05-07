@@ -20,21 +20,42 @@ Joueur creerJoueur(float x, float y, float largeur, float hauteur,int id, ColorR
 
 }
 
-void afficherJoueur(Joueur joueur){
+void afficherJoueur(Joueur joueur, Level level){
+
+
 
         glPushMatrix();
 
             glTranslated(joueur.x,joueur.y,0);
 
-            glScalef(joueur.largeur,joueur.hauteur,0);
+            glPushMatrix();
 
-            glColor3f(joueur.color.r,joueur.color.g,joueur.color.b);
-            
-            drawSquare(1);
+                glScalef(joueur.largeur,joueur.hauteur,0);
+
+                glColor3f(joueur.color.r,joueur.color.g,joueur.color.b);
+                
+                drawSquare(1);
+                
+            glPopMatrix();
+
+        if(joueur.id == level.joueurs[0].id){
+            glPushMatrix();
+                glScalef(7,7,0);
+
+                glTranslated(0, 2,0);
+
+                glColor3f(1,1,1);
+
+                drawTriangle(1);
+
+            glPopMatrix();
+        }
 
         glPopMatrix();
 
 }
+
+
 
 void updateJoueur(Joueur * joueur, Camera * camera, float deltaTime){
 
@@ -237,5 +258,6 @@ void resetVelocite(Joueur *joueur, float deltaTime){
 }
 
 void respawn(Joueur *joueur){
-    (*joueur).y = 500;
+    (*joueur).x = (*joueur).originX;
+    (*joueur).y = (*joueur).originY;
 }
