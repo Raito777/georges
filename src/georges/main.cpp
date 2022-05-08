@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+
+//#include <SDL2/SDL_image.h>
 //#include "fakesdlimage.h"
 
 #include <GL/gl.h>
@@ -23,7 +24,6 @@
 
 
 
-using namespace std;
 
 
 time_t rawtime;
@@ -106,7 +106,7 @@ int main(int argc, char** argv)
 
     onWindowResized(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    if( !( IMG_Init( IMG_INIT_PNG ) & IMG_INIT_PNG ) )
+    /*if( !( IMG_Init( IMG_INIT_PNG ) & IMG_INIT_PNG ) )
     {
         printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
     }
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
     if ( NULL == imageTitre )
     {
         printf("SDL could not load image! : %s\n", SDL_GetError());
-    }
+    }*/
 
     windowSurface = SDL_GetWindowSurface( window );
     /* Boucle principale */
@@ -131,14 +131,15 @@ int main(int argc, char** argv)
 
     /*---------------------BACKGROUND----------------------------*/
 
+
     std::random_device dev;
     std::mt19937 rng(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> distWidth(0,WINDOW_WIDTH); 
-    std::uniform_int_distribution<std::mt19937::result_type> distHeight(0,WINDOW_HEIGHT);
-    std::uniform_int_distribution<std::mt19937::result_type> colorR(0,30); 
-    std::uniform_int_distribution<std::mt19937::result_type> colorV(0,10); 
-    std::uniform_int_distribution<std::mt19937::result_type> colorB(0,60); 
-    std::uniform_int_distribution<std::mt19937::result_type> radius(10,20); 
+    std::uniform_real_distribution<float> distWidth(0,WINDOW_WIDTH); 
+    std::uniform_real_distribution<float> distHeight(0,WINDOW_HEIGHT);
+    std::uniform_real_distribution<float> colorR(0,30); 
+    std::uniform_real_distribution<float> colorV(0,10); 
+    std::uniform_real_distribution<float> colorB(0,60); 
+    std::uniform_real_distribution<float> radius(10,20); 
 
     int nbCercle = 100;
     Cercle listeCercle[nbCercle];
@@ -150,11 +151,8 @@ int main(int argc, char** argv)
         Cercle cercle = createCercle(distWidth(rng),distHeight(rng), radius(rng), colorCircle);
 
         listeCercle[i] = cercle;
+
     }
-
-
-
-
 
     Background background = createBackground(nbCercle, listeCercle);
 
@@ -271,10 +269,12 @@ int main(int argc, char** argv)
         //SDL_RenderDrawRect(renderer, &rectangleTitre);
 
        //SDL_RenderCopy(renderer, texture, NULL, &rectangleTitre);
+
+       glPushMatrix();
        
        cameraTranslate(camera);
 
-        updateBackground(background, camera);
+       updateBackground(background, camera);
 
        for(int i = 0; i < jeuxGeorges[levelActif].taille; i++){
             
@@ -317,6 +317,7 @@ int main(int argc, char** argv)
             respawn(&jeuxGeorges[levelActif].joueurs[0]);
         }
 
+        glPopMatrix();
         //SDL_BlitSurface(imageTitre, NULL, windowSurface, NULL );
 
         SDL_GL_SwapWindow(window);

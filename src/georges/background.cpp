@@ -16,9 +16,10 @@ Cercle createCercle(float x, float y, float radius, ColorRGB color){
 
     std::random_device dev;
     std::mt19937 rng(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> dist6(15,40); // distribution in range [1, 6]
+    std::uniform_real_distribution<float> z(15,40); // distribution in range [1, 6]
 
-    Cercle newCercle = {x, y, dist6(rng), radius, color};
+
+    Cercle newCercle = {x, y, z(rng), radius, color};
 
     return newCercle;
 
