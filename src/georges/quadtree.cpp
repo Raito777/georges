@@ -1,153 +1,80 @@
-// C++ Implementation of Quad Tree
-#include <iostream>
+#include <SDL2/SDL.h>
+//#include "fakesdlimage.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
+#include <time.h>
+#include <random>
+
+#include "headers/couleurs.h"
+#include "headers/systeme.h"
+#include "headers/background.h"
 
 #include "headers/quadtree.h"
-#include "headers/joueur.h"
 
-using namespace std;
-  
-
-  
-
-// Insert a node into the quadtree
-void Quad::insert(Plateforme *node)
+QuadTree creerQuadTree(float x, float y, float width, float height, Plateforme* listePlateformes, int nbPlateforme)
 {
+    QuadTree quadTree;
+    (quadTree).x = x;
+    (quadTree).y = y;
+    (quadTree).largeur = width;
+    (quadTree).hauteur = height;
+    (quadTree).plateformes = listePlateformes;
+    (quadTree).nbPlateforme = nbPlateforme;
+    (quadTree).isLeaf = 1;
 
+    return quadTree;
+}
 
-    if (node == NULL)
-        return;
-  
+void splitQuadTree(QuadTree* quadTree){
+    float newLargeur = (*quadTree).largeur/2;
+    float newHauteur = (*quadTree).hauteur/2;
 
-    // Current quad cannot contain it
-    if (!inBoundary((*node).x, (*node).y)){
+    QuadTree hautGauche = creerQuadTree((*quadTree).x-(*quadTree).x/2, (*quadTree).y+(*quadTree).y/2, newLargeur, newHauteur, (*quadTree).plateformes, (*quadTree).nbPlateforme);
+    QuadTree hautDroite = creerQuadTree((*quadTree).x+(*quadTree).x/2, (*quadTree).y+(*quadTree).y/2, newLargeur, newHauteur, (*quadTree).plateformes, (*quadTree).nbPlateforme);
+    QuadTree basGauche = creerQuadTree((*quadTree).x-(*quadTree).x/2, (*quadTree).y-(*quadTree).y/2, newLargeur, newHauteur, (*quadTree).plateformes, (*quadTree).nbPlateforme);
+    QuadTree basDroite = creerQuadTree((*quadTree).x+(*quadTree).x/2, (*quadTree).y-(*quadTree).y/2, newLargeur, newHauteur, (*quadTree).plateformes, (*quadTree).nbPlateforme);
+
+    QuadTree nodes[4] = {hautGauche, hautDroite, basGauche, basDroite};
     
-        return;
-    }
-              
-    // We are at a quad of unit area
-    // We cannot subdivide this quad further
-    if (abs(topLeft.x - botRight.x) <= 1 &&
-        abs(topLeft.y - botRight.y) <= 1)
-    {
-        if (n == NULL)
-            n = node;
-        return;
-    }
-  
-    if ((topLeft.x + botRight.x) / 2 >= node->x)
-    {
-        // Indicates topLeftTree
-        if ((topLeft.y + botRight.y) / 2 >= node->y)
-        {
-            if (topLeftTree == NULL)
-                topLeftTree = new Quad(
-                    Point(topLeft.x, topLeft.y),
-                    Point((topLeft.x + botRight.x) / 2,
-                        (topLeft.y + botRight.y) / 2));
-            topLeftTree->insert(node);
-        }
-  
-        // Indicates botLeftTree
-        else
-        {
-            if (botLeftTree == NULL)
-                botLeftTree = new Quad(
-                    Point(topLeft.x,
-                        (topLeft.y + botRight.y) / 2),
-                    Point((topLeft.x + botRight.x) / 2,
-                        botRight.y));
-            botLeftTree->insert(node);
-        }
-    }
-    else
-    {
-        // Indicates topRightTree
-        if ((topLeft.y + botRight.y) / 2 >= node->y)
-        {
-            if (topRightTree == NULL)
-                topRightTree = new Quad(
-                    Point((topLeft.x + botRight.x) / 2,
-                        topLeft.y),
-                    Point(botRight.x,
-                        (topLeft.y + botRight.y) / 2));
-            topRightTree->insert(node);
-        }
-  
-        // Indicates botRightTree
-        else
-        {
-            if (botRightTree == NULL)
-                botRightTree = new Quad(
-                    Point((topLeft.x + botRight.x) / 2,
-                        (topLeft.y + botRight.y) / 2),
-                    Point(botRight.x, botRight.y));
-            botRightTree->insert(node);
-        }
-    }
-}
-  
-// Find a node in a quadtree
-Plateforme* Quad::search(Point p)
-{
-    // Current quad cannot contain it
-    if (!inBoundary(p.x, p.y)){
-        
-        return NULL;
-    }
+    afficherQuadTree(hautGauche);
+    afficherQuadTree(hautDroite);
+    afficherQuadTree(basGauche);
+    afficherQuadTree(basDroite);
 
-
-
-    // We are at a quad of unit length
-    // We cannot subdivide this quad further
-    if (n != NULL){
-        return n;
-      }
-      
-    if ((topLeft.x + botRight.x) / 2 >= p.x)
-    {
-        // Indicates topLeftTree
-        if ((topLeft.y + botRight.y) / 2 >= p.y)
-        {
-            if (topLeftTree == NULL)
-                return NULL;
-            return topLeftTree->search(p);
-        }
-  
-        // Indicates botLeftTree
-        else
-        {
-            if (botLeftTree == NULL)
-                return NULL;
-            return botLeftTree->search(p);
-        }
-    }
-    else
-    {
-        // Indicates topRightTree
-        if ((topLeft.y + botRight.y) / 2 >= p.y)
-        {
-            if (topRightTree == NULL)
-                return NULL;
-            return topRightTree->search(p);
-        }
-  
-        // Indicates botRightTree
-        else
-        {
-            if (botRightTree == NULL)
-                return NULL;
-            return botRightTree->search(p);
-        }
-    }
 };
-  
-// Check if current quadtree contains the point
-bool Quad::inBoundary(float x, float y)
-{
-    return (x >= topLeft.x &&
-        x <= botRight.x &&
-        y >= topLeft.y &&
-        y <= botRight.y);
+
+void checkQuadtreeZone(QuadTree* quadTree, Joueur joueur){
+
+    
 
 }
+
+
+
+void afficherQuadTree(QuadTree quadTree){
+
+
+            glPushMatrix();
+
+                glTranslated(quadTree.x,quadTree.y,0);
+
+                glPushMatrix();
+
+                    glScalef(quadTree.largeur,quadTree.hauteur,0);
+
+                    glColor3f(0.5,0.5,0.5);
+                    
+                    drawSquare(0);
+                    
+                glPopMatrix();
+
+            glPopMatrix();
+        
+
+
+
+}
+

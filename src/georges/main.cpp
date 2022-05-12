@@ -23,9 +23,6 @@
 #include "headers/background.h"
 
 
-
-
-
 time_t rawtime;
 struct tm* timeinfo;
 
@@ -241,7 +238,10 @@ int main(int argc, char** argv)
 
 
     Level jeuxGeorges[nbLevel] = {level1, level2};
+
+    QuadTree qt = creerQuadTree(WINDOW_WIDTH/2,  WINDOW_HEIGHT/2, WINDOW_WIDTH, WINDOW_HEIGHT, jeuxGeorges[levelActif].lvl, jeuxGeorges[levelActif].taille);
     
+
     /*Quad qt(Point(0, WINDOW_HEIGHT), Point(WINDOW_WIDTH, 0));
 
     qt.insert(&plateforme);
@@ -252,6 +252,7 @@ int main(int argc, char** argv)
 
     while(gameLoop) 
     {
+     
 
         float startTime = (float)SDL_GetTicks()/1000.f;
 
@@ -271,6 +272,9 @@ int main(int argc, char** argv)
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
+        afficherQuadTree(qt);
+
+        splitQuadTree(&qt);
 
        /* if(qt.search(Point(joueur.x, joueur.y)) != NULL){
             cout << "Node a: " << qt.search(Point(0, 0))->y << "\n";
