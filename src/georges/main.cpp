@@ -161,11 +161,11 @@ int main(int argc, char** argv)
 
     ColorRGB couleurPlateforme = createColor(0.8,0.8,1);
 
-    Joueur joueur = creerJoueur(WINDOW_WIDTH/2, 340,5,15, 1, createColor(0.7,0.4,0.2));
+    Joueur joueur = creerJoueur(WINDOW_WIDTH/2, 340,10,30, 1, createColor(0.7,0.4,0.2));
 
-    Joueur joueur1 = creerJoueur(WINDOW_WIDTH/2-30, 210,15,15, 2, createColor(0.4,0.4,0.6));
+    Joueur joueur1 = creerJoueur(WINDOW_WIDTH/2-30, 210,30,30, 2, createColor(0.4,0.4,0.6));
 
-    Joueur joueur2 = creerJoueur(WINDOW_WIDTH/2+30, 210,20,10, 3, createColor(0.1,0.8,0.4));
+    Joueur joueur2 = creerJoueur(WINDOW_WIDTH/2+30, 210,40,20, 3, createColor(0.1,0.8,0.4));
 
     Arrive arrive = creerArrive(WINDOW_WIDTH/2,520,joueur.largeur,joueur.hauteur,joueur.id,joueur.color);
 
@@ -198,34 +198,44 @@ int main(int argc, char** argv)
     //printf("%s\n", level1.nom);
 
     /*----------------------LEVEL 2--------------------------------*/
-
-    int tailleLvl2 = 1;
+    int tailleLvl2 = 5;
 
     int nbJoueurLvl2 = 3;
 
     ColorRGB couleurPlateformeLevel2 = createColor(0.8,0.8,1);
 
-    Joueur joueurLevel2 = creerJoueur(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,5,15, 1, createColor(0.2,0.6,0.2));
+    Joueur joueurLevel2 = creerJoueur(WINDOW_WIDTH/2-300,310,15,25, 1, createColor(0.2,0.6,0.2));
 
-    Joueur joueur1Level2 = creerJoueur(WINDOW_WIDTH/2-100,WINDOW_HEIGHT/2,15,15, 2, createColor(0.9,0.3,0.2));
+    Joueur joueur1Level2 = creerJoueur(WINDOW_WIDTH/2-250,310,25,25, 2, createColor(0.9,0.3,0.2));
 
-    Joueur joueur2Level2 = creerJoueur(WINDOW_WIDTH/2-200,WINDOW_HEIGHT/2,20,10, 3, createColor(0.1,0.8,0.8));
+    Joueur joueur2Level2 = creerJoueur(WINDOW_WIDTH/2-350,310,50,10, 4, createColor(0.5,0.8,0.4));
 
     Joueur joueursLevel2[nbJoueurLvl2] = {joueurLevel2, joueur1Level2, joueur2Level2};
 
-    Arrive arriveLevel2 = creerArrive(WINDOW_WIDTH/2-200,WINDOW_HEIGHT/2,joueurLevel2.largeur,joueurLevel2.hauteur,joueurLevel2.id,joueurLevel2.color);
+    Arrive arriveLevel2 = creerArrive(WINDOW_WIDTH/2+300,605,joueurLevel2.largeur,joueurLevel2.hauteur,joueurLevel2.id,joueurLevel2.color);
 
-    Arrive arrive1Level2 = creerArrive(WINDOW_WIDTH/2-300,WINDOW_HEIGHT/2,joueur1Level2.largeur,joueur1Level2.hauteur,joueur1Level2.id,joueur1Level2.color);
+    Arrive arrive1Level2 = creerArrive(WINDOW_WIDTH/2+100,450,joueur1Level2.largeur,joueur1Level2.hauteur,joueur1Level2.id,joueur1Level2.color);
 
-    Arrive arrive2Level2 = creerArrive(WINDOW_WIDTH/2,WINDOW_HEIGHT/2,joueur2Level2.largeur,joueur2Level2.hauteur,joueur2Level2.id, joueur2Level2.color);
+    Arrive arrive2Level2 = creerArrive(WINDOW_WIDTH/2+100,80,joueur2Level2.largeur,joueur2Level2.hauteur,joueur2Level2.id, joueur2Level2.color);
 
     Arrive listeArriveLevel2[nbJoueurLvl2] = {arriveLevel2, arrive1Level2, arrive2Level2};
 
-    Plateforme plateformeLevel2 = creerPlateforme(WINDOW_WIDTH/2, WINDOW_HEIGHT/2-300, 600, 300, couleurPlateformeLevel2);
+    Plateforme plateformeLevel2 = creerPlateforme(WINDOW_WIDTH/2-300, 0, 150, 300, couleurPlateforme);
 
-    Plateforme plateformesLevel2[tailleLvl2] = {plateformeLevel2};
+    Plateforme plateforme1Level2 = creerPlateforme(WINDOW_WIDTH/2, WINDOW_HEIGHT/2-50, 300, 100, couleurPlateformeLevel2);
+    
+    Plateforme plateforme2Level2 = creerPlateforme(WINDOW_WIDTH/2-50,WINDOW_HEIGHT/2-150,200, 150, couleurPlateforme);
+
+    Plateforme plateforme3Level2 = creerPlateforme(WINDOW_WIDTH/2, WINDOW_HEIGHT/2-300, 300, 150, couleurPlateforme);
+
+    Plateforme plateforme4Level2 = creerPlateforme(WINDOW_WIDTH/2+300, 0, 150, 1200, couleurPlateforme);
+
+
+
+    Plateforme plateformesLevel2[tailleLvl2] = {plateformeLevel2,plateforme1Level2,plateforme2Level2,plateforme3Level2,plateforme4Level2};
 
     Level level2 = creerLevel(tailleLvl2, nbJoueurLvl2, plateformesLevel2, joueursLevel2, listeArriveLevel2, "Level 2");
+
 
     
 
@@ -280,11 +290,11 @@ int main(int argc, char** argv)
             
             afficherPlateforme(jeuxGeorges[levelActif].lvl[i]);
             updatePlateforme(&(jeuxGeorges[levelActif].lvl[i]), &(jeuxGeorges[levelActif].joueurs[0]), deltaTime);
-            checkCollision(&(jeuxGeorges[levelActif].lvl[i]), &(jeuxGeorges[levelActif].joueurs[0]), deltaTime);
             //printf("velocite : %f\n", joueur.velocite);
 
         }
 
+        checkCollision(&(jeuxGeorges[levelActif]), deltaTime);
         
         checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime);
 
@@ -296,9 +306,10 @@ int main(int argc, char** argv)
 
 
         //on commence a 1 parcequ'on ne veut pas verifier que le joueur est en collision avec lui même
-        for(int i = 1; i < jeuxGeorges[levelActif].nbJoueurs; i++){
+        
+        /*for(int i = 1; i < jeuxGeorges[levelActif].nbJoueurs; i++){
             checkCollisionJoueur(&(jeuxGeorges[levelActif].joueurs[i]), &(jeuxGeorges[levelActif].joueurs[0]), deltaTime);
-        }
+        }*/
 
         for(int i = 0; i < jeuxGeorges[levelActif].nbJoueurs; i++){
             afficherArrive(jeuxGeorges[levelActif].arrives[i]);

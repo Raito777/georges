@@ -20,6 +20,8 @@ typedef struct Joueur {
     float hauteurSaut;
     bool isJumping;
     bool isMooving;
+    bool isCollidingPlateforme;
+    bool isCollidingPlayer;
     int nbSaut;
     int nbSautMax;
     int id;
