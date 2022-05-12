@@ -290,6 +290,15 @@ int main(int argc, char** argv)
 
        updateBackground(background, camera);
 
+        for(int i = 0; i < jeuxGeorges[levelActif].nbJoueurs; i++){
+            afficherJoueur(jeuxGeorges[levelActif].joueurs[i], jeuxGeorges[levelActif]);
+        }
+
+        for(int i = 0; i < jeuxGeorges[levelActif].nbJoueurs; i++){
+            afficherArrive(jeuxGeorges[levelActif].arrives[i]);
+            updateArrive(&(jeuxGeorges[levelActif].arrives[i]), &(jeuxGeorges[levelActif].joueurs[0]), &jeuxGeorges[levelActif]);
+        }
+
        for(int i = 0; i < jeuxGeorges[levelActif].taille; i++){
             
             afficherPlateforme(jeuxGeorges[levelActif].lvl[i]);
@@ -302,9 +311,7 @@ int main(int argc, char** argv)
         
         checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime);
 
-        for(int i = 0; i < jeuxGeorges[levelActif].nbJoueurs; i++){
-            afficherJoueur(jeuxGeorges[levelActif].joueurs[i], jeuxGeorges[levelActif]);
-        }
+
 
         updateJoueur(&(jeuxGeorges[levelActif].joueurs[0]), &camera, deltaTime);
 
@@ -315,10 +322,7 @@ int main(int argc, char** argv)
             checkCollisionJoueur(&(jeuxGeorges[levelActif].joueurs[i]), &(jeuxGeorges[levelActif].joueurs[0]), deltaTime);
         }*/
 
-        for(int i = 0; i < jeuxGeorges[levelActif].nbJoueurs; i++){
-            afficherArrive(jeuxGeorges[levelActif].arrives[i]);
-            updateArrive(&(jeuxGeorges[levelActif].arrives[i]), &(jeuxGeorges[levelActif].joueurs[0]), &jeuxGeorges[levelActif]);
-        }
+
 
         if(verifieVictoire(jeuxGeorges[levelActif])){
             printf("victory\n");
