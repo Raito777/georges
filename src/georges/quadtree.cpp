@@ -21,9 +21,11 @@ QuadTree creerQuadTree(float x, float y, float width, float height, Plateforme* 
     (quadTree).y = y;
     (quadTree).largeur = width;
     (quadTree).hauteur = height;
-    (quadTree).plateformes = listePlateformes;
-    (quadTree).nbPlateforme = nbPlateforme;
+    (quadTree).plateformes = new Plateforme[200];
+    (quadTree).nbPlateforme = 0;
     (quadTree).isLeaf = 1;
+    (quadTree).nbMaxPlateformes = 4;
+
 
     return quadTree;
 }
@@ -31,14 +33,32 @@ QuadTree creerQuadTree(float x, float y, float width, float height, Plateforme* 
 void splitQuadTree(QuadTree* quadTree){
     float newLargeur = (*quadTree).largeur/2;
     float newHauteur = (*quadTree).hauteur/2;
+    float demiLargeur = (*quadTree).x/2;
+    float demiHauteur = (*quadTree).y/2;
 
-    QuadTree hautGauche = creerQuadTree((*quadTree).x-(*quadTree).x/2, (*quadTree).y+(*quadTree).y/2, newLargeur, newHauteur, (*quadTree).plateformes, (*quadTree).nbPlateforme);
-    QuadTree hautDroite = creerQuadTree((*quadTree).x+(*quadTree).x/2, (*quadTree).y+(*quadTree).y/2, newLargeur, newHauteur, (*quadTree).plateformes, (*quadTree).nbPlateforme);
-    QuadTree basGauche = creerQuadTree((*quadTree).x-(*quadTree).x/2, (*quadTree).y-(*quadTree).y/2, newLargeur, newHauteur, (*quadTree).plateformes, (*quadTree).nbPlateforme);
-    QuadTree basDroite = creerQuadTree((*quadTree).x+(*quadTree).x/2, (*quadTree).y-(*quadTree).y/2, newLargeur, newHauteur, (*quadTree).plateformes, (*quadTree).nbPlateforme);
+    printf("nb plateformes %d", (*quadTree).nbPlateforme);
 
-    QuadTree nodes[4] = {hautGauche, hautDroite, basGauche, basDroite};
-    
+    QuadTree hautGauche = creerQuadTree((*quadTree).x-demiLargeur, (*quadTree).y+demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbPlateforme], 0);
+    QuadTree hautDroite = creerQuadTree((*quadTree).x+demiLargeur, (*quadTree).y+demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbPlateforme], 0);
+    QuadTree basGauche = creerQuadTree((*quadTree).x-demiLargeur, (*quadTree).y-demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbPlateforme], 0);
+    QuadTree basDroite = creerQuadTree((*quadTree).x+demiLargeur, (*quadTree).y-demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbPlateforme], 0);
+
+    printf("%f\n", &quadTree->nodes[0].x);
+
+    quadTree->nodes = new QuadTree[4];
+    quadTree->nodes[0] = hautGauche;
+        printf("ça passe\n");
+
+    quadTree->nodes[1] = hautDroite;
+            printf("ça passe\n");
+
+    quadTree->nodes[2] = basGauche;
+            printf("ça passe\n");
+
+    quadTree->nodes[3] = basDroite;
+            printf("ça passe\n");
+
+
     afficherQuadTree(hautGauche);
     afficherQuadTree(hautDroite);
     afficherQuadTree(basGauche);
@@ -46,16 +66,108 @@ void splitQuadTree(QuadTree* quadTree){
 
 };
 
-void checkQuadtreeZone(QuadTree* quadTree, Joueur joueur){
+int donnerZoneQuadTree(QuadTree quadtree, Plateforme plateforme){
+    int index = -1;
 
-    
+    bool partieHaut = plateforme.y - plateforme.hauteur/2 > quadtree.y;
+    bool partieBasse = plateforme.y + plateforme.hauteur/2 < quadtree.y;
+    bool partieGauche = plateforme.x - plateforme.largeur/2 < quadtree.x;
+    bool partieDroite = plateforme.x + plateforme.largeur/2 > quadtree.x;
 
+    if(partieHaut){
+        if(partieGauche){
+            index = 0;
+        }else if(partieDroite){
+            index = 1;
+        }
+    }
+
+    if(partieBasse){
+        if(partieGauche){
+            index = 2;
+        }else if(partieDroite){
+            index = 3;
+        }
+    }
+
+
+    return index;
+}
+
+int donnerZoneQuadTreeJoueur(QuadTree quadtree, Joueur plateforme){
+    int index = -1;
+
+    bool partieHaut = plateforme.y - plateforme.hauteur/2 > quadtree.y;
+    bool partieBasse = plateforme.y + plateforme.hauteur/2 < quadtree.y;
+    bool partieGauche = plateforme.x - plateforme.largeur/2 < quadtree.x;
+    bool partieDroite = plateforme.x + plateforme.largeur/2 > quadtree.x;
+
+    if(partieHaut){
+        if(partieGauche){
+            index = 0;
+        }else if(partieDroite){
+            index = 1;
+        }
+    }
+
+    if(partieBasse){
+        if(partieGauche){
+            index = 2;
+        }else if(partieDroite){
+            index = 3;
+        }
+    }
+
+
+    return index;
 }
 
 
+bool estFeuille(QuadTree quadtree){
+
+    if(quadtree.nodes[0].x == NULL){
+
+        return true;
+    }
+
+    return false;
+
+}
+
+void insererPlateforme(QuadTree* quadtree, Plateforme plateforme){
+
+    int index = donnerZoneQuadTree(*quadtree, plateforme);
+
+    if(index != -1){
+
+        if((*quadtree).nbPlateforme >= (*quadtree).nbMaxPlateformes){
+            
+            (*quadtree).isLeaf = 0;
+            splitQuadTree(quadtree);
+            insererPlateforme(&(*quadtree).nodes[index], plateforme);
+
+        }else{
+
+            (*quadtree).plateformes[(*quadtree).nbPlateforme] = plateforme;
+            (*quadtree).nbPlateforme++;
+        }
+
+    }
+
+}
+
+void drawQuadTree(QuadTree quadtree){
+
+    
+        afficherQuadTree(quadtree);
+    
+
+
+    //drawQuadTree(quadtree.nodes[0]);
+
+}
 
 void afficherQuadTree(QuadTree quadTree){
-
 
             glPushMatrix();
 
@@ -73,8 +185,5 @@ void afficherQuadTree(QuadTree quadTree){
 
             glPopMatrix();
         
-
-
-
 }
 

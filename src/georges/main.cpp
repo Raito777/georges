@@ -144,14 +144,14 @@ int main(int argc, char** argv)
 
     std::random_device dev;
     std::mt19937 rng(dev());
-    std::uniform_real_distribution<float> distWidth(0,WINDOW_WIDTH); 
-    std::uniform_real_distribution<float> distHeight(0,WINDOW_HEIGHT);
+    std::uniform_real_distribution<float> distWidth(-300,WINDOW_WIDTH+300); 
+    std::uniform_real_distribution<float> distHeight(-300,WINDOW_HEIGHT+300);
     std::uniform_real_distribution<float> colorR(0,30); 
     std::uniform_real_distribution<float> colorV(0,10); 
     std::uniform_real_distribution<float> colorB(0,60); 
     std::uniform_real_distribution<float> radius(10,20); 
 
-    int nbCercle = 100;
+    int nbCercle = 200;
     Cercle listeCercle[nbCercle];
 
     for(int i = 0; i <= nbCercle; i++){
@@ -259,6 +259,11 @@ int main(int argc, char** argv)
     QuadTree qt = creerQuadTree(WINDOW_WIDTH/2,  WINDOW_HEIGHT/2, WINDOW_WIDTH, WINDOW_HEIGHT, jeuxGeorges[levelActif].lvl, jeuxGeorges[levelActif].taille);
     
 
+    for(int i = 0; i < jeuxGeorges[levelActif].taille; i++){
+        insererPlateforme(&qt, jeuxGeorges[levelActif].lvl[i]);
+    }
+    //insererQuadTree(&qt);
+
     /*Quad qt(Point(0, WINDOW_HEIGHT), Point(WINDOW_WIDTH, 0));
 
     qt.insert(&plateforme);
@@ -281,7 +286,7 @@ int main(int argc, char** argv)
         }
         
 
-        //printf("velocite y : %i, \n", level1.joueurs[0].id);
+        //printf("rectangle : %i, \n", donnerZoneQuadTree(qt,plateforme3));
 
         //checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
 
@@ -298,9 +303,9 @@ int main(int argc, char** argv)
        else{
         
 
-        afficherQuadTree(qt);
 
-        splitQuadTree(&qt);
+        printf("%i\n", donnerZoneQuadTreeJoueur(qt,(jeuxGeorges[levelActif].joueurs[0])));
+
 
        /* if(qt.search(Point(joueur.x, joueur.y)) != NULL){
             cout << "Node a: " << qt.search(Point(0, 0))->y << "\n";
@@ -362,7 +367,11 @@ int main(int argc, char** argv)
             respawn(&jeuxGeorges[levelActif].joueurs[0]);
         }
 
+        drawQuadTree(qt);
+
         glPopMatrix();
+
+
         //SDL_BlitSurface(imageTitre, NULL, windowSurface, NULL );
 
         SDL_GL_SwapWindow(window);
