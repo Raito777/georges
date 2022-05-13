@@ -55,6 +55,19 @@ void drawSquare(int filled)
     glEnd();
 }
 
+void drawSquare2(int Filled, float r, float g, float b , float positionX, float positionY,float tailleX, float tailleY ){
+  glColor3ub(r, g, b);
+  if(Filled==1) { 
+    glBegin(GL_QUADS);
+  }
+  else glBegin(GL_LINE_LOOP);
+    glVertex2f(positionX, positionY);
+    glVertex2f(positionX+tailleX, positionY);
+    glVertex2f(positionX+tailleX, positionY+tailleY);
+    glVertex2f(positionX, positionY+tailleY);
+  glEnd();
+}
+
 void drawTriangle(int filled) 
 {
     if(filled) 

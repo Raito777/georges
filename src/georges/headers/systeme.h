@@ -23,9 +23,11 @@ void drawCircle(int filled);
 
 void drawSquare(int filled);
 
+void drawSquare2(int Filled, float r, float g, float b , float positionX, float positionY,float tailleX, float tailleY );
+
 void drawTriangle(int filled);
 
-void checkEvenements(int *gameLoop, Joueur *joueur, Level level, float deltaTime);
+void checkEvenements(int *gameLoop, Joueur *joueur, Level level, float deltaTime,bool *ismenu);
 
 void onWindowResized(unsigned int width, unsigned int height);
 

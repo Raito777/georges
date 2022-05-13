@@ -21,6 +21,7 @@
 #include "headers/arrive.h"
 #include "headers/level.h"
 #include "headers/background.h"
+#include "headers/menu.h"
 
 
 time_t rawtime;
@@ -36,9 +37,13 @@ SDL_Surface *imageTitre = NULL;
 SDL_Surface *windowSurface = NULL;
 
 
+
 int main(int argc, char** argv)
 {
     /* Initialisation de la SDL */
+    
+
+    
 
 
 
@@ -121,10 +126,18 @@ int main(int argc, char** argv)
 
 
     int gameLoop = 1;
+    
+    bool ismenu =false;
 
     int levelActif = 0;
 
     int nbLevel = 2;
+
+    int menu = 0;
+
+    GLuint textureID[360];
+
+    
 
     /*---------------------BACKGROUND----------------------------*/
 
@@ -166,7 +179,7 @@ int main(int argc, char** argv)
 
     Arrive arrive = creerArrive(WINDOW_WIDTH/2,520,joueur.largeur,joueur.hauteur,joueur.id,joueur.color);
 
-    Arrive arrive1 = creerArrive(WINDOW_WIDTH/2-300,310,joueur1.largeur,joueur1.hauteur,joueur1.id,joueur1.color);
+    Arrive arrive1 = creerArrive(WINDOW_WIDTH/2-280,310,joueur1.largeur,joueur1.hauteur,joueur1.id,joueur1.color);
 
     Arrive arrive2 = creerArrive(WINDOW_WIDTH/2+300,307,joueur2.largeur,joueur2.hauteur,joueur2.id, joueur2.color);
 
@@ -232,12 +245,16 @@ int main(int argc, char** argv)
     Plateforme plateformesLevel2[tailleLvl2] = {plateformeLevel2,plateforme1Level2,plateforme2Level2,plateforme3Level2,plateforme4Level2};
 
     Level level2 = creerLevel(tailleLvl2, nbJoueurLvl2, plateformesLevel2, joueursLevel2, listeArriveLevel2, "Level 2");
+    
 
 
     
 
 
     Level jeuxGeorges[nbLevel] = {level1, level2};
+    
+
+    
 
     QuadTree qt = creerQuadTree(WINDOW_WIDTH/2,  WINDOW_HEIGHT/2, WINDOW_WIDTH, WINDOW_HEIGHT, jeuxGeorges[levelActif].lvl, jeuxGeorges[levelActif].taille);
     
@@ -253,7 +270,7 @@ int main(int argc, char** argv)
     while(gameLoop) 
     {
      
-
+        
         float startTime = (float)SDL_GetTicks()/1000.f;
 
         deltaTime = startTime - oldTimeSinceStart;
@@ -262,7 +279,7 @@ int main(int argc, char** argv)
         if(FRAMEDELAY > deltaTime){
             SDL_Delay(FRAMEDELAY - deltaTime);
         }
-
+        
 
         //printf("velocite y : %i, \n", level1.joueurs[0].id);
 
@@ -271,6 +288,15 @@ int main(int argc, char** argv)
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
+        printf("%i\n",ismenu);
+        if(ismenu==true){
+            DrawMenu(menu,textureID,WINDOW_WIDTH,WINDOW_HEIGHT);
+            checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime,&ismenu);
+            
+            
+        }
+       else{
+        
 
         afficherQuadTree(qt);
 
@@ -309,7 +335,7 @@ int main(int argc, char** argv)
 
         checkCollision(&(jeuxGeorges[levelActif]), deltaTime);
         
-        checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime);
+        checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime,&ismenu);
 
 
 
@@ -342,6 +368,8 @@ int main(int argc, char** argv)
         SDL_GL_SwapWindow(window);
 
     }
+
+    } 
 
 
     SDL_FreeSurface(imageTitre);

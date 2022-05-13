@@ -54,3 +54,21 @@ void updateBackground(Background background, Camera camera){
         afficherCercle(background.cercles[i], camera);
     }
 }
+
+void loadTexture(const char* filename, GLuint textureID[10], int numTexture){
+  
+  SDL_Surface* image;
+  image = IMG_Load(filename);
+
+  if(image == NULL){
+    printf("Error : image not found : %s\n", filename);
+  }
+
+  glGenTextures(1, textureID);
+  glBindTexture(GL_TEXTURE_2D, numTexture);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+  // TODO : Supprimer les texture lors de la fermeture du prog
+  //glDeleteTextures(10, &textureID);
+  SDL_FreeSurface(image);
+}

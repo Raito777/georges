@@ -11,13 +11,16 @@
 #include "headers/systeme.h"
 #include "headers/plateforme.h"
 #include "headers/level.h"
+#include "headers/menu.h"
 
-void checkEvenements(int *gameLoop, Joueur *joueur, Level level, float deltaTime){
+void checkEvenements(int *gameLoop, Joueur *joueur, Level level, float deltaTime,bool *ismenu){
 
 SDL_Event e;
 
 float step = 10;
 float stepSaut = 80;
+
+
 
 /*const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
@@ -41,6 +44,7 @@ if (state[SDL_SCANCODE_A]) {
 if (state[SDL_SCANCODE_D]) { 
     setVelocite(joueur, -step);
 }
+
 
 
 
@@ -76,9 +80,21 @@ while(SDL_PollEvent(&e))
 
             case SDLK_s:
                 break;
+
+            case SDLK_p:
+            printf("ah cest deja ca\n");
+                    if(*(ismenu)==true){
+                        *(ismenu) = false;
+                    }
+                    else{
+                        *(ismenu) = true;
+                    }
+            break;
             default:
                 break;
+
         }
+
        // printf("velocite %f : \n", (*plateforme).velocite);
 
     }
@@ -108,6 +124,7 @@ while(SDL_PollEvent(&e))
 
     }
 
+
     switch(e.type) 
     {
         case SDL_WINDOWEVENT:
@@ -133,7 +150,7 @@ while(SDL_PollEvent(&e))
         case SDL_KEYDOWN:
             ///printf("touche pressee (code = %d)\n", e.key.keysym.sym);
             break;
-            
+
         default:
             break;
     }
