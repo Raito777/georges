@@ -6,9 +6,6 @@
 
 #include "level.h"
 
-#define MAX_CUBE_COUNT 100  
-#define MAX_CUBE_COUNT_PER_NODE 4
-
 typedef struct QuadTree {
 
     float x;
@@ -19,6 +16,7 @@ typedef struct QuadTree {
     Plateforme* plateformes;
     int nbPlateforme;
     int isLeaf;
+    int nbMaxPlateformes;
 
 } QuadTree;
 
@@ -30,7 +28,13 @@ void splitQuadTree(QuadTree* quadTree);
 
 int checkQuadTreeCollision(float largeur, float hauteur, float x, float y, QuadTree quadTree);
 
-void checkQuadtreeZone(QuadTree* quadTree, Joueur joueur);
+int donnerZoneQuadTree(QuadTree quadtree, Plateforme plateforme);
+
+bool estFeuille(QuadTree quadTree);
+
+void insererQuadTree(QuadTree* quadtree);
+
+void insererPlateforme(QuadTree* quadtree);
 
 void findPlayerQuadTree(QuadTree* quadTree, Joueur player, std::vector<QuadTree*> &playerQuadTree);
 

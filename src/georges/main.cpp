@@ -241,6 +241,7 @@ int main(int argc, char** argv)
 
     QuadTree qt = creerQuadTree(WINDOW_WIDTH/2,  WINDOW_HEIGHT/2, WINDOW_WIDTH, WINDOW_HEIGHT, jeuxGeorges[levelActif].lvl, jeuxGeorges[levelActif].taille);
     
+            insererQuadTree(&qt);
 
     /*Quad qt(Point(0, WINDOW_HEIGHT), Point(WINDOW_WIDTH, 0));
 
@@ -264,7 +265,7 @@ int main(int argc, char** argv)
         }
 
 
-        //printf("velocite y : %i, \n", level1.joueurs[0].id);
+        printf("rectangle : %i, \n", donnerZoneQuadTree(qt,plateforme3));
 
         //checkEvenements(&gameLoop, &joueur, &plateforme, deltaTime);
 
@@ -274,7 +275,6 @@ int main(int argc, char** argv)
 
         afficherQuadTree(qt);
 
-        splitQuadTree(&qt);
 
        /* if(qt.search(Point(joueur.x, joueur.y)) != NULL){
             cout << "Node a: " << qt.search(Point(0, 0))->y << "\n";
