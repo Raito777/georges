@@ -21,8 +21,8 @@ QuadTree creerQuadTree(float x, float y, float width, float height, Plateforme* 
     (quadTree).y = y;
     (quadTree).largeur = width;
     (quadTree).hauteur = height;
-    (quadTree).plateformes = listePlateformes;
-    (quadTree).nbPlateforme = nbPlateforme;
+    (quadTree).plateformes = new Plateforme[200];
+    (quadTree).nbPlateforme = 0;
     (quadTree).isLeaf = 1;
     (quadTree).nbMaxPlateformes = 4;
 
@@ -59,8 +59,6 @@ void splitQuadTree(QuadTree* quadTree){
             printf("ça passe\n");
 
 
-
-
     afficherQuadTree(hautGauche);
     afficherQuadTree(hautDroite);
     afficherQuadTree(basGauche);
@@ -94,34 +92,36 @@ int donnerZoneQuadTree(QuadTree quadtree, Plateforme plateforme){
 
 
     return index;
-
 }
 
-void insererPlateforme(QuadTree* quadtree){
+int donnerZoneQuadTreeJoueur(QuadTree quadtree, Joueur plateforme){
+    int index = -1;
 
-    splitQuadTree(quadtree);
+    bool partieHaut = plateforme.y - plateforme.hauteur/2 > quadtree.y;
+    bool partieBasse = plateforme.y + plateforme.hauteur/2 < quadtree.y;
+    bool partieGauche = plateforme.x - plateforme.largeur/2 < quadtree.x;
+    bool partieDroite = plateforme.x + plateforme.largeur/2 > quadtree.x;
 
-    for(int i = 0; i < (*quadtree).nbPlateforme; i++){
-
-        int index = donnerZoneQuadTree((*quadtree), (*quadtree).plateformes[i]);
-
-        if(index != -1){
-
-                (*quadtree).isLeaf = 0;
-
-
-
-                (*quadtree).nodes[index].plateformes[(*quadtree).nodes[index].nbPlateforme] = (*quadtree).plateformes[i];
-
-                
-                (*quadtree).nodes[index].nbPlateforme++;
-                (*quadtree).nodes[index].isLeaf = 1;
-
-
+    if(partieHaut){
+        if(partieGauche){
+            index = 0;
+        }else if(partieDroite){
+            index = 1;
         }
     }
 
+    if(partieBasse){
+        if(partieGauche){
+            index = 2;
+        }else if(partieDroite){
+            index = 3;
+        }
+    }
+
+
+    return index;
 }
+
 
 bool estFeuille(QuadTree quadtree){
 
@@ -134,25 +134,40 @@ bool estFeuille(QuadTree quadtree){
 
 }
 
-void insererQuadTree(QuadTree* quadtree){
-    if((*quadtree).isLeaf){
+void insererPlateforme(QuadTree* quadtree, Plateforme plateforme){
+
+    int index = donnerZoneQuadTree(*quadtree, plateforme);
+
+    if(index != -1){
 
         if((*quadtree).nbPlateforme >= (*quadtree).nbMaxPlateformes){
+            
+            (*quadtree).isLeaf = 0;
+            splitQuadTree(quadtree);
+            insererPlateforme(&(*quadtree).nodes[index], plateforme);
 
-            insererPlateforme(quadtree);
+        }else{
+
+            (*quadtree).plateformes[(*quadtree).nbPlateforme] = plateforme;
+            (*quadtree).nbPlateforme++;
         }
-
-    }else{
-
 
     }
 
 }
 
+void drawQuadTree(QuadTree quadtree){
 
+    
+        afficherQuadTree(quadtree);
+    
+
+
+    //drawQuadTree(quadtree.nodes[0]);
+
+}
 
 void afficherQuadTree(QuadTree quadTree){
-
 
             glPushMatrix();
 
@@ -170,8 +185,5 @@ void afficherQuadTree(QuadTree quadTree){
 
             glPopMatrix();
         
-
-
-
 }
 

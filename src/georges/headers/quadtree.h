@@ -24,18 +24,21 @@ QuadTree creerQuadTree(float x, float y, float width, float height, Plateforme* 
 
 void afficherQuadTree(QuadTree QuadTree);
 
+void drawQuadTree(QuadTree quadtree);
+
 void splitQuadTree(QuadTree* quadTree);
 
 int checkQuadTreeCollision(float largeur, float hauteur, float x, float y, QuadTree quadTree);
 
 int donnerZoneQuadTree(QuadTree quadtree, Plateforme plateforme);
 
+int donnerZoneQuadTreeJoueur(QuadTree quadtree, Joueur plateforme);
+
 bool estFeuille(QuadTree quadTree);
 
-void insererQuadTree(QuadTree* quadtree);
+void insererNoeud(QuadTree* quadtree);
 
-void insererPlateforme(QuadTree* quadtree);
+void insererPlateforme(QuadTree* quadtree, Plateforme plateforme);
 
-void findPlayerQuadTree(QuadTree* quadTree, Joueur player, std::vector<QuadTree*> &playerQuadTree);
 
 #endif
