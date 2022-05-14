@@ -89,7 +89,7 @@ void updateCamera(Camera *camera, Joueur *joueur){
 }
 
 void cameraTranslate(Camera camera){
-
+    
     glTranslated(camera.x, camera.y, 0);
 
 }
@@ -131,30 +131,30 @@ bool collisionHaut(Joueur joueur, Plateforme plateforme){
     return joueur.y+joueur.hauteur/2 >= plateforme.y-plateforme.hauteur/2;
 }
 
-void checkCollision(Level *level, float deltaTime){
+void checkCollision(Plateforme* plateforme, Joueur* joueur, int size, int nbJoueurs, float deltaTime){
 
-    for(int i = 0; i < (*level).taille; i++){
+    for(int i = 0; i < size; i++){
 
-        if(collision((*level).joueurs[0], (*level).lvl[i])){
+        if(collision(joueur[0], plateforme[i])){
             //printf("collision Partout\n");
-            (*level).joueurs[0].isCollidingPlateforme = true;
+            joueur[0].isCollidingPlateforme = true;
 
-            if(collisionBas((*level).joueurs[0], (*level).lvl[i])){
+            if(collisionBas(joueur[0],  plateforme[i])){
                 //(*level).joueurs[0].y += 200 * deltaTime;
-                (*level).joueurs[0].nbSaut = 0;
-                (*level).joueurs[0].isJumping = true;
-                (*level).joueurs[0].hauteurSaut = (*level).joueurs[0].y + 100;
-                (*level).joueurs[0].velociteSaut = 0;
+                joueur[0].nbSaut = 0;
+                joueur[0].isJumping = true;
+                joueur[0].hauteurSaut = joueur[0].y + 100;
+                joueur[0].velociteSaut = 0;
                 
             //printf("collision Bas\n");
             } else 
-            if(collisionHaut((*level).joueurs[0], (*level).lvl[i])){
-                (*level).joueurs[0].velociteSaut = (*level).joueurs[0].velociteSaut *-1.01;
+            if(collisionHaut(joueur[0],  plateforme[i])){
+                joueur[0].velociteSaut = joueur[0].velociteSaut *-1.01;
                 
                 //printf("collision X\n");
             }
-            if(collisionX((*level).joueurs[0], (*level).lvl[i])){
-                (*level).joueurs[0].velocite = (*level).joueurs[0].velocite*-1.1;
+            if(collisionX(joueur[0],  plateforme[i])){
+                joueur[0].velocite = joueur[0].velocite*-1.1;
             // printf("collision X\n");
             }
 
@@ -162,26 +162,26 @@ void checkCollision(Level *level, float deltaTime){
 
     }
 
-    for(int i = 1; i < (*level).nbJoueurs; i++){
+    for(int i = 1; i < nbJoueurs; i++){
 
             //printf("collision Partout\n");
-            if(collisionJoueur((*level).joueurs[0], (*level).joueurs[i])){
+            if(collisionJoueur(joueur[0], joueur[i])){
                 //printf("collision Partout\n");
-                (*level).joueurs[0].isCollidingPlayer = true;
-                if(collisionJoueurBas((*level).joueurs[0], (*level).joueurs[i])){
+                joueur[0].isCollidingPlayer = true;
+                if(collisionJoueurBas(joueur[0], joueur[i])){
                     //(*level).joueurs[0].y += 200 * deltaTime;
-                    (*level).joueurs[0].nbSaut = 0;
-                    (*level).joueurs[0].isJumping = true;
-                    (*level).joueurs[0].hauteurSaut = (*level).joueurs[0].y + 100;
-                    (*level).joueurs[0].velociteSaut = 0;
+                    joueur[0].nbSaut = 0;
+                    joueur[0].isJumping = true;
+                    joueur[0].hauteurSaut = joueur[0].y + 100;
+                    joueur[0].velociteSaut = 0;
                 //printf("collision Bas\n");
                 }else
-                if(collisionJoueurHaut((*level).joueurs[0], (*level).joueurs[i])){
-                    (*level).joueurs[0].velociteSaut = (*level).joueurs[0].velociteSaut *-1.01;
+                if(collisionJoueurHaut(joueur[0], joueur[i])){
+                    joueur[0].velociteSaut = joueur[0].velociteSaut *-1.01;
                     //printf("collision X\n");
                 }
-                if(collisionJoueurX((*level).joueurs[0], (*level).joueurs[i])){
-                    (*level).joueurs[0].velocite = (*level).joueurs[0].velocite*-1.1;
+                if(collisionJoueurX(joueur[0], joueur[i])){
+                    joueur[0].velocite = joueur[0].velocite*-1.1;
                 // printf("collision X\n");
                 }
 

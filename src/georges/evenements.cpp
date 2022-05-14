@@ -11,7 +11,7 @@
 #include "headers/systeme.h"
 #include "headers/plateforme.h"
 #include "headers/level.h"
-#include "headers/menu.h"
+//#include "headers/menu.h"
 
 void checkEvenements(int *gameLoop, Joueur *joueur, Level level, float deltaTime,bool *ismenu){
 

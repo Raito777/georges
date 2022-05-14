@@ -38,7 +38,7 @@ void setCouleur(Joueur * joueur, ColorRGB color);
 
 void gravite(Joueur *unJoueur, float deltaTme);
 
-void checkCollision(Level * level, float deltaTime);
+void checkCollision(Plateforme* plateforme, Joueur* joueur, int size, int nbJoueurs, float deltaTime);
 
 void checkCollisionJoueur(Joueur *joueur, Joueur *joueur1, float deltaTime);
 

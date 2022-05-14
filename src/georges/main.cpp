@@ -189,15 +189,25 @@ int main(int argc, char** argv)
 
     Plateforme plateforme1 = creerPlateforme(WINDOW_WIDTH/2-300, 0, 150, WINDOW_HEIGHT, couleurPlateforme);
 
+    Plateforme plateforme01 = creerPlateforme(WINDOW_WIDTH/2-300, 500, 150, 40, couleurPlateforme);
+
+    Plateforme plateforme02 = creerPlateforme(WINDOW_WIDTH/2-300, 700, 150, 40, couleurPlateforme);
+
+
+    Plateforme plateforme03 = creerPlateforme(WINDOW_WIDTH/2-30, -400, 150, WINDOW_HEIGHT, couleurPlateforme);
+    Plateforme plateforme04 = creerPlateforme(WINDOW_WIDTH/2+150, +200, 150, WINDOW_HEIGHT, couleurPlateforme);
+    Plateforme plateforme05 = creerPlateforme(WINDOW_WIDTH/2-246, -300, 150, WINDOW_HEIGHT, couleurPlateforme);
+    Plateforme plateforme06 = creerPlateforme(WINDOW_WIDTH/2+350, +400, 150, WINDOW_HEIGHT, couleurPlateforme);
+
     Plateforme plateforme2 = creerPlateforme(WINDOW_WIDTH/2+300, 0, 150,  WINDOW_HEIGHT, couleurPlateforme);
 
     Plateforme plateforme3 = creerPlateforme(WINDOW_WIDTH/2, 490, 200,  40, couleurPlateforme);
 
-    int tailleLvl1 = 4;
+    int tailleLvl1 = 6;
 
     int nbJoueurLvl1 = 3;
 
-    Plateforme lvl1[tailleLvl1] = {plateforme1, plateforme, plateforme2, plateforme3};
+    Plateforme lvl1[tailleLvl1] = {plateforme1, plateforme, plateforme2, plateforme3, plateforme01, plateforme02};
 
     Joueur joueursLevel1[nbJoueurLvl1] = {joueur, joueur1, joueur2};
 
@@ -246,22 +256,23 @@ int main(int argc, char** argv)
 
     Level level2 = creerLevel(tailleLvl2, nbJoueurLvl2, plateformesLevel2, joueursLevel2, listeArriveLevel2, "Level 2");
     
+    Level jeuxGeorges[nbLevel] = {level2, level1};
 
 
+
+    QuadTree qt = creerQuadTree((WINDOW_WIDTH)/2,  (WINDOW_HEIGHT)/2, WINDOW_WIDTH+400, WINDOW_HEIGHT+400, new Plateforme[jeuxGeorges[0].taille], jeuxGeorges[0].taille, 7);
     
+    QuadTree result;
+
+    Plateforme* collisionable;
 
 
-    Level jeuxGeorges[nbLevel] = {level1, level2};
-    
+    for(int i = 0; i < jeuxGeorges[0].taille; i++){
 
-    
+        insererPlateforme(&qt, jeuxGeorges[0].lvl[i]);
 
-    QuadTree qt = creerQuadTree(WINDOW_WIDTH/2,  WINDOW_HEIGHT/2, WINDOW_WIDTH, WINDOW_HEIGHT, jeuxGeorges[levelActif].lvl, jeuxGeorges[levelActif].taille);
-    
-
-    for(int i = 0; i < jeuxGeorges[levelActif].taille; i++){
-        insererPlateforme(&qt, jeuxGeorges[levelActif].lvl[i]);
     }
+
     //insererQuadTree(&qt);
 
     /*Quad qt(Point(0, WINDOW_HEIGHT), Point(WINDOW_WIDTH, 0));
@@ -293,18 +304,29 @@ int main(int argc, char** argv)
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        printf("%i\n",ismenu);
+
+
+        result = chercherPlateforme(qt, jeuxGeorges[levelActif].joueurs[0]);
+
+        //printf("quadTree nb : %i\n", result.nbPlateforme);   
+
+        checkCollision(result.plateformes, jeuxGeorges[levelActif].joueurs, result.nbPlateforme, jeuxGeorges[levelActif].nbJoueurs, deltaTime);
+
+
+
+        
+        /*printf("%i\n",ismenu);
         if(ismenu==true){
             DrawMenu(menu,textureID,WINDOW_WIDTH,WINDOW_HEIGHT);
             checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime,&ismenu);
             
             
         }
-       else{
+       else{*/
         
 
 
-        printf("%i\n", donnerZoneQuadTreeJoueur(qt,(jeuxGeorges[levelActif].joueurs[0])));
+        //printf("%i\n", donnerZoneQuadTreeJoueur(qt,(jeuxGeorges[levelActif].joueurs[0])));
 
 
        /* if(qt.search(Point(joueur.x, joueur.y)) != NULL){
@@ -338,7 +360,6 @@ int main(int argc, char** argv)
 
         }
 
-        checkCollision(&(jeuxGeorges[levelActif]), deltaTime);
         
         checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime,&ismenu);
 
@@ -363,11 +384,16 @@ int main(int argc, char** argv)
         }
 
 
-        if(jeuxGeorges[levelActif].joueurs[0].y <= 0){
+        if(jeuxGeorges[levelActif].joueurs[0].y <= -200){
             respawn(&jeuxGeorges[levelActif].joueurs[0]);
         }
 
         drawQuadTree(qt);
+
+        for(int i = 0; i < result.nbPlateforme; i++){
+            result.plateformes[i].color = createColor(1,0,0);
+            afficherPlateforme(result.plateformes[i]);
+        }
 
         glPopMatrix();
 
@@ -376,7 +402,7 @@ int main(int argc, char** argv)
 
         SDL_GL_SwapWindow(window);
 
-    }
+    //}
 
     } 
 
