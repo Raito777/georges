@@ -203,11 +203,11 @@ int main(int argc, char** argv)
 
     Plateforme plateforme3 = creerPlateforme(WINDOW_WIDTH/2, 490, 200,  40, couleurPlateforme);
 
-    int tailleLvl1 = 6;
+    int tailleLvl1 = 4;
 
     int nbJoueurLvl1 = 3;
 
-    Plateforme lvl1[tailleLvl1] = {plateforme1, plateforme, plateforme2, plateforme3, plateforme01, plateforme02};
+    Plateforme lvl1[tailleLvl1] = {plateforme1, plateforme, plateforme2, plateforme3};
 
     Joueur joueursLevel1[nbJoueurLvl1] = {joueur, joueur1, joueur2};
 
@@ -256,7 +256,7 @@ int main(int argc, char** argv)
 
     Level level2 = creerLevel(tailleLvl2, nbJoueurLvl2, plateformesLevel2, joueursLevel2, listeArriveLevel2, "Level 2");
     
-    Level jeuxGeorges[nbLevel] = {level2, level1};
+    Level jeuxGeorges[nbLevel] = {level1, level1};
 
 
 
@@ -267,11 +267,11 @@ int main(int argc, char** argv)
     Plateforme* collisionable;
 
 
-    for(int i = 0; i < jeuxGeorges[0].taille; i++){
+     for(int i = 0; i < jeuxGeorges[0].taille; i++){
+         printf("le rect bg : %f\n", jeuxGeorges[0].lvl[i].x);
+        insererPlateforme(&qt, jeuxGeorges[0].lvl[i], 3);
 
-        insererPlateforme(&qt, jeuxGeorges[0].lvl[i]);
-
-    }
+     }
 
     //insererQuadTree(&qt);
 
@@ -305,26 +305,28 @@ int main(int argc, char** argv)
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
+        glScalef(0.5,0.5,0);
 
         result = chercherPlateforme(qt, jeuxGeorges[levelActif].joueurs[0]);
 
-        //printf("quadTree nb : %i\n", result.nbPlateforme);   
+        printf("quadTree nb : %i\n", result.nbPlateforme);   
 
-        checkCollision(result.plateformes, jeuxGeorges[levelActif].joueurs, result.nbPlateforme, jeuxGeorges[levelActif].nbJoueurs, deltaTime);
+        checkCollision(result.plateformes, jeuxGeorges[levelActif].joueurs, result.nbPlateforme, jeuxGeorges[levelActif].nbJoueurs, deltaTime); 
+        
 
 
 
         
-        /*printf("%i\n",ismenu);
+        //printf("%i\n",ismenu);
         if(ismenu==true){
             DrawMenu(menu,textureID,WINDOW_WIDTH,WINDOW_HEIGHT);
             checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime,&ismenu);
             
             
         }
-       else{*/
+       else{
         
-
+        
 
         //printf("%i\n", donnerZoneQuadTreeJoueur(qt,(jeuxGeorges[levelActif].joueurs[0])));
 
@@ -388,11 +390,16 @@ int main(int argc, char** argv)
             respawn(&jeuxGeorges[levelActif].joueurs[0]);
         }
 
+        //j'affiche la quadTree
+
         drawQuadTree(qt);
 
+        //Je colore en rouge les plateformes pour lesquels je calcule les collisions
         for(int i = 0; i < result.nbPlateforme; i++){
+
             result.plateformes[i].color = createColor(1,0,0);
             afficherPlateforme(result.plateformes[i]);
+
         }
 
         glPopMatrix();
@@ -402,7 +409,7 @@ int main(int argc, char** argv)
 
         SDL_GL_SwapWindow(window);
 
-    //}
+    }
 
     } 
 

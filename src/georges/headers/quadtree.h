@@ -37,7 +37,7 @@ bool contientJoueur(QuadTree quadtree, Joueur plateforme);
 
 void insererNoeud(QuadTree* quadtree);
 
-void insererPlateforme(QuadTree* quadtree, Plateforme plateforme);
+void insererPlateforme(QuadTree* quadtree, Plateforme plateforme, int index);
 
 QuadTree chercherPlateforme(QuadTree quadtree, Joueur joueur);
 
