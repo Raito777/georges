@@ -41,13 +41,6 @@ SDL_Surface *windowSurface = NULL;
 int main(int argc, char** argv)
 {
     /* Initialisation de la SDL */
-    
-
-    
-
-
-
-
     SDL_Init(SDL_INIT_EVERYTHING);
 
 
@@ -256,7 +249,7 @@ int main(int argc, char** argv)
 
     Level level2 = creerLevel(tailleLvl2, nbJoueurLvl2, plateformesLevel2, joueursLevel2, listeArriveLevel2, "Level 2");
     
-    Level jeuxGeorges[nbLevel] = {level1, level1};
+    Level jeuxGeorges[nbLevel] = {level2, level1};
 
 
 
@@ -264,28 +257,17 @@ int main(int argc, char** argv)
     
     QuadTree result;
 
-    Plateforme* collisionable;
-
-
      for(int i = 0; i < jeuxGeorges[0].taille; i++){
-         printf("le rect bg : %f\n", jeuxGeorges[0].lvl[i].x);
+        printf("le rect bg : %f\n", jeuxGeorges[0].lvl[i].x);
         insererPlateforme(&qt, jeuxGeorges[0].lvl[i], 3);
 
      }
 
-    //insererQuadTree(&qt);
-
-    /*Quad qt(Point(0, WINDOW_HEIGHT), Point(WINDOW_WIDTH, 0));
-
-    qt.insert(&plateforme);
-    qt.insert(&plateforme1);
-    qt.insert(&plateforme2);*/
-
-    //printf("Width : %i, height : %i \n", WINDOW_WIDTH, WINDOW_HEIGHT);
 
     while(gameLoop) 
     {
      
+        printf("ca marche\n");
         
         float startTime = (float)SDL_GetTicks()/1000.f;
 
@@ -305,7 +287,7 @@ int main(int argc, char** argv)
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        glScalef(0.5,0.5,0);
+        
 
         result = chercherPlateforme(qt, jeuxGeorges[levelActif].joueurs[0]);
 
@@ -403,9 +385,6 @@ int main(int argc, char** argv)
         }
 
         glPopMatrix();
-
-
-        //SDL_BlitSurface(imageTitre, NULL, windowSurface, NULL );
 
         SDL_GL_SwapWindow(window);
 

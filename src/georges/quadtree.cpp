@@ -69,7 +69,7 @@ void splitQuadTree(QuadTree* quadTree){
 void insererPlateforme(QuadTree* quadtree, Plateforme plateforme, int index){
 
     //Si la plateforme est dans le quadtree
-    printf("lezzzgooooo\n");
+    //printf("lezzzgooooo\n");
     if(estDansQuadTree(*quadtree, plateforme)){
            
         
