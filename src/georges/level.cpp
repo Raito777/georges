@@ -54,6 +54,7 @@ bool verifieVictoire(Level level){
             return false;
         }
     }
+    
     return true;
 
 }

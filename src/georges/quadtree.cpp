@@ -14,7 +14,7 @@
 
 #include "headers/quadtree.h"
 
-QuadTree creerQuadTree(float x, float y, float width, float height, Plateforme* listePlateformes, int nbPlateforme, int id)
+QuadTree creerQuadTree(float x, float y, float width, float height, Plateforme* listePlateformes, int nbPlateforme, int nbMaxPlateforme, int id)
 {
     QuadTree quadTree;
     (quadTree).x = x;
@@ -24,9 +24,9 @@ QuadTree creerQuadTree(float x, float y, float width, float height, Plateforme* 
     (quadTree).plateformes = listePlateformes;
     (quadTree).nbPlateforme = 0;
     (quadTree).isLeaf = 1;
-    (quadTree).nbMaxPlateformes = 2;
+    (quadTree).nbMaxPlateformes = nbMaxPlateforme;
     (quadTree).id = id;
-
+    quadTree.nodes = nullptr;
 
     return quadTree;
 }
@@ -42,13 +42,13 @@ void splitQuadTree(QuadTree* quadTree){
 
     id++;
 
-    QuadTree hautGauche = creerQuadTree((*quadTree).x-demiLargeur, (*quadTree).y+demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbPlateforme], 0, id);
+    QuadTree hautGauche = creerQuadTree((*quadTree).x-demiLargeur, (*quadTree).y+demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbMaxPlateformes+20], 0, (*quadTree).nbMaxPlateformes, id);
     id++;
-    QuadTree hautDroite = creerQuadTree((*quadTree).x+demiLargeur, (*quadTree).y+demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbPlateforme], 0, id);
+    QuadTree hautDroite = creerQuadTree((*quadTree).x+demiLargeur, (*quadTree).y+demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbMaxPlateformes+20], 0, (*quadTree).nbMaxPlateformes, id);
     id++;
-    QuadTree basGauche = creerQuadTree((*quadTree).x-demiLargeur, (*quadTree).y-demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbPlateforme], 0, id);
+    QuadTree basGauche = creerQuadTree((*quadTree).x-demiLargeur, (*quadTree).y-demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbMaxPlateformes+20], 0, (*quadTree).nbMaxPlateformes, id);
     id++;
-    QuadTree basDroite = creerQuadTree((*quadTree).x+demiLargeur, (*quadTree).y-demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbPlateforme], 0, id);
+    QuadTree basDroite = creerQuadTree((*quadTree).x+demiLargeur, (*quadTree).y-demiHauteur, newLargeur, newHauteur, new Plateforme[(*quadTree).nbMaxPlateformes+20], 0, (*quadTree).nbMaxPlateformes, id);
     id++;
 
     quadTree->nodes = new QuadTree[4];
@@ -131,11 +131,12 @@ bool estDansQuadTree(QuadTree quadtree, Plateforme plateforme){
     return false;
 }
 
-QuadTree chercherPlateforme(QuadTree quadtree, Joueur joueur){
+QuadTree* chercherPlateforme(QuadTree& quadtree, Joueur joueur){
+
 
     //si le quadtree est une feuille, on le retourne directement
         if(quadtree.isLeaf == 1){
-            return quadtree;
+            return &quadtree;
         }
         //si le quadtree n'est pas une feuille, on relance la fonction avec ses 4 enfants, jusqu'a qu'il soit une feuille
         //printf("nb plat : %i\n", quadtree.nbPlateforme);
@@ -155,6 +156,9 @@ QuadTree chercherPlateforme(QuadTree quadtree, Joueur joueur){
         if(contientJoueur(quadtree.nodes[3], joueur)){
           return chercherPlateforme(quadtree.nodes[3],  joueur);
         }
+
+        return nullptr;
+
 
 }
 

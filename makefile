@@ -19,8 +19,7 @@ OBJ_GEORGES := $(patsubst $(SRCDIR)%.cpp,$(OBJDIR)%.o,$(wildcard $(SRCDIR)george
 all : georges
 
 georges : $(OBJ_GEORGES)
-	$(CC) $(CFLAGS) $(OBJ_GEORGES) -o $(BINDIR)$(EXEC_GEORGES) $(LDFLAGS)
-
+	$(CXX) $(CFLAGS) $(OBJ_GEORGES) -o $(BINDIR)$(EXEC_GEORGES) $(LDFLAGS)
 
 
 clean :
@@ -32,6 +31,5 @@ clean :
 
 $(OBJDIR)%.o: $(SRCDIR)%.cpp
 	mkdir -p `dirname $@`
-	$(CC) -o $@ -c $< $(CFLAGS)
-
+	$(CXX) -o $@ -c $< $(CFLAGS)
 

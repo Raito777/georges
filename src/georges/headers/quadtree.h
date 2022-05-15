@@ -21,7 +21,7 @@ typedef struct QuadTree {
 
 } QuadTree;
 
-QuadTree creerQuadTree(float x, float y, float width, float height, Plateforme* listePlateformes, int nbPlateforme, int id);
+QuadTree creerQuadTree(float x, float y, float width, float height, Plateforme* listePlateformes, int nbPlateforme, int nbMaxPlateformes, int id);
 
 void afficherQuadTree(QuadTree QuadTree);
 
@@ -39,7 +39,6 @@ void insererNoeud(QuadTree* quadtree);
 
 void insererPlateforme(QuadTree* quadtree, Plateforme plateforme, int index);
 
-QuadTree chercherPlateforme(QuadTree quadtree, Joueur joueur);
-
+QuadTree *chercherPlateforme(QuadTree &quadtree, Joueur joueur);
 
 #endif
