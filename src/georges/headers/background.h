@@ -31,7 +31,7 @@ typedef struct Background {
 
 
 
-Cercle createCercle(float x, float y, float radius, ColorRGB color);
+Cercle createCercle(float x, float y, float radius, ColorRGB color, int z);
 
 Background createBackground(int nbElements, Cercle *cercles);
 

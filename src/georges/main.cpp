@@ -139,12 +139,14 @@ int main(int argc, char** argv)
 
     std::random_device dev;
     std::mt19937 rng(dev());
-    std::uniform_real_distribution<float> distWidth(-300,WINDOW_WIDTH+300); 
-    std::uniform_real_distribution<float> distHeight(-300,WINDOW_HEIGHT+300);
-    std::uniform_real_distribution<float> colorR(0,30); 
-    std::uniform_real_distribution<float> colorV(0,10); 
-    std::uniform_real_distribution<float> colorB(0,60); 
-    std::uniform_real_distribution<float> radius(10,20); 
+    std::uniform_real_distribution<float> distWidth(-800,WINDOW_WIDTH+800); 
+    std::uniform_real_distribution<float> distHeight(-800,WINDOW_HEIGHT+800);
+    std::uniform_real_distribution<float> colorR(80,100); 
+    std::uniform_real_distribution<float> colorV(80,100); 
+    std::uniform_real_distribution<float> colorB(80,100); 
+    std::uniform_real_distribution<float> radius(5,15); 
+    std::uniform_real_distribution<float> z(30,60);
+
 
     int nbCercle = 200;
     Cercle listeCercle[nbCercle];
@@ -153,7 +155,7 @@ int main(int argc, char** argv)
 
         ColorRGB colorCircle = createColor(colorR(rng)*0.01,colorV(rng)*0.01,colorB(rng)*0.01);
 
-        Cercle cercle = createCercle(distWidth(rng),distHeight(rng), radius(rng), colorCircle);
+        Cercle cercle = createCercle(distWidth(rng),distHeight(rng), radius(rng), colorCircle, z(rng));
 
         listeCercle[i] = cercle;
 
@@ -161,54 +163,78 @@ int main(int argc, char** argv)
 
     Background background = createBackground(nbCercle, listeCercle);
 
+        std::random_device dev2;
+    std::mt19937 rng2(dev());
+    std::uniform_real_distribution<float> distWidth2(-300,WINDOW_WIDTH+300); 
+    std::uniform_real_distribution<float> distHeight2(-300,WINDOW_HEIGHT+300);
+    std::uniform_real_distribution<float> colorR2(0,20); 
+    std::uniform_real_distribution<float> colorV2(0,20); 
+    std::uniform_real_distribution<float> colorB2(0,20); 
+    std::uniform_real_distribution<float> radius2(3,8);
+    std::uniform_real_distribution<float> z2(30,60);
+
+    int nbCercle2 = 200;
+    Cercle listeCercle2[nbCercle2];
+
+    for(int i = 0; i <= nbCercle; i++){
+
+        ColorRGB colorCircle2 = createColor(colorR2(rng2)*0.01,colorV2(rng2)*0.01,colorB2(rng2)*0.01);
+
+        Cercle cercle2 = createCercle(distWidth2(rng2),distHeight2(rng2), radius2(rng2), colorCircle2, -z2(rng2));
+
+        listeCercle2[i] = cercle2;
+
+    }
+
+    Background background2 = createBackground(nbCercle2, listeCercle2);
+
 
     /*-------------------LEVEL 1 --------------------------------*/
 
-    ColorRGB couleurPlateforme = createColor(0.8,0.8,1);
+    ColorRGB couleurPlateforme = createColor(0.05,0.05,0.05);
 
-    Joueur joueur = creerJoueur(WINDOW_WIDTH/2, 340,10,30, 1, createColor(0.7,0.4,0.2));
+    Joueur joueur = creerJoueur(WINDOW_WIDTH/2+60, 400,10,30, 1, createColor(0.7,0.4,0.2));
 
-    Joueur joueur1 = creerJoueur(WINDOW_WIDTH/2-30, 210,30,30, 2, createColor(0.4,0.4,0.6));
+    Joueur joueur1 = creerJoueur(WINDOW_WIDTH/2-30, 380,30,30, 2, createColor(0.4,0.4,0.6));
 
-    Joueur joueur2 = creerJoueur(WINDOW_WIDTH/2+30, 210,40,20, 3, createColor(0.1,0.8,0.4));
+    Joueur joueur2 = creerJoueur(WINDOW_WIDTH/2+30, 380,40,20, 3, createColor(0.1,0.8,0.4));
 
-    Arrive arrive = creerArrive(WINDOW_WIDTH/2,520,joueur.largeur,joueur.hauteur,joueur.id,joueur.color);
+    Arrive arrive = creerArrive(WINDOW_WIDTH/2+400, 525,joueur.largeur,joueur.hauteur,joueur.id,joueur.color);
 
-    Arrive arrive1 = creerArrive(WINDOW_WIDTH/2-280,310,joueur1.largeur,joueur1.hauteur,joueur1.id,joueur1.color);
+    Arrive arrive1 = creerArrive(WINDOW_WIDTH/2+600, 377,joueur1.largeur,joueur1.hauteur,joueur1.id,joueur1.color);
 
-    Arrive arrive2 = creerArrive(WINDOW_WIDTH/2+300,307,joueur2.largeur,joueur2.hauteur,joueur2.id, joueur2.color);
+    Arrive arrive2 = creerArrive(WINDOW_WIDTH/2+800, 520,joueur2.largeur,joueur2.hauteur,joueur2.id, joueur2.color);
 
     Camera camera = creerCamera(joueur.x, joueur.y);
 
-    Plateforme plateforme = creerPlateforme(WINDOW_WIDTH/2, -100, 200,  WINDOW_HEIGHT, couleurPlateforme);
+    Plateforme plateforme = creerPlateforme(WINDOW_WIDTH/2, 1350, 5000,  WINDOW_HEIGHT*2, couleurPlateforme);
 
-    Plateforme plateforme1 = creerPlateforme(WINDOW_WIDTH/2-300, 0, 150, WINDOW_HEIGHT, couleurPlateforme);
+    Plateforme plateforme1 = creerPlateforme(WINDOW_WIDTH/2-300, 0, 3000, WINDOW_HEIGHT, couleurPlateforme);
 
-    Plateforme plateforme01 = creerPlateforme(WINDOW_WIDTH/2-300, 500, 150, 40, couleurPlateforme);
+    Plateforme plateforme2 = creerPlateforme(WINDOW_WIDTH/2-600, 500, 800,  WINDOW_HEIGHT, couleurPlateforme);
 
-    Plateforme plateforme02 = creerPlateforme(WINDOW_WIDTH/2-300, 700, 150, 40, couleurPlateforme);
+    Plateforme plateforme3 = creerPlateforme(WINDOW_WIDTH/2+400, 490, 200,  40, couleurPlateforme);
+
+    Plateforme plateforme4 = creerPlateforme(WINDOW_WIDTH/2+800, 490, 200,  40, couleurPlateforme);
+
+    Plateforme plateforme5 = creerPlateforme(WINDOW_WIDTH/2+2000, 500, 2000,  WINDOW_HEIGHT*3, couleurPlateforme);
 
 
-    Plateforme plateforme03 = creerPlateforme(WINDOW_WIDTH/2-30, -400, 150, WINDOW_HEIGHT, couleurPlateforme);
-    Plateforme plateforme04 = creerPlateforme(WINDOW_WIDTH/2+150, +200, 150, WINDOW_HEIGHT, couleurPlateforme);
-    Plateforme plateforme05 = creerPlateforme(WINDOW_WIDTH/2-246, -300, 150, WINDOW_HEIGHT, couleurPlateforme);
-    Plateforme plateforme06 = creerPlateforme(WINDOW_WIDTH/2+350, +400, 150, WINDOW_HEIGHT, couleurPlateforme);
 
-    Plateforme plateforme2 = creerPlateforme(WINDOW_WIDTH/2+300, 0, 150,  WINDOW_HEIGHT, couleurPlateforme);
-
-    Plateforme plateforme3 = creerPlateforme(WINDOW_WIDTH/2, 490, 200,  40, couleurPlateforme);
-
-    int tailleLvl1 = 4;
+    int tailleLvl1 = 6;
 
     int nbJoueurLvl1 = 3;
 
-    Plateforme lvl1[tailleLvl1] = {plateforme1, plateforme, plateforme2, plateforme3};
+    Plateforme lvl1[tailleLvl1] = {plateforme1, plateforme, plateforme2, plateforme3, plateforme4, plateforme5};
 
     Joueur joueursLevel1[nbJoueurLvl1] = {joueur, joueur1, joueur2};
 
     Arrive arriveLevel1[nbJoueurLvl1] = {arrive, arrive1, arrive2};
 
-    Level level1 = creerLevel(tailleLvl1, nbJoueurLvl1, lvl1, joueursLevel1, arriveLevel1, "Level 1");
+    ColorRGB couleurBackgroundLevel1 = createColor(0.2,0.2,0.2);
+
+
+    Level level1 = creerLevel(tailleLvl1, nbJoueurLvl1, lvl1, joueursLevel1, arriveLevel1, "Level 1", couleurBackgroundLevel1, 1);
 
     //printf("%s\n", level1.nom);
 
@@ -217,7 +243,7 @@ int main(int argc, char** argv)
 
     int nbJoueurLvl2 = 3;
 
-    ColorRGB couleurPlateformeLevel2 = createColor(0.8,0.8,1);
+    ColorRGB couleurPlateformeLevel2 = createColor(0.05,0.05,0.05);
 
     Joueur joueurLevel2 = creerJoueur(WINDOW_WIDTH/2-300,310,15,25, 1, createColor(0.2,0.6,0.2));
 
@@ -245,11 +271,11 @@ int main(int argc, char** argv)
 
     Plateforme plateforme4Level2 = creerPlateforme(WINDOW_WIDTH/2+300, 0, 150, 1200, couleurPlateforme);
 
-
+    ColorRGB couleurBackgroundLevel2 = createColor(0.2,0.2,0.2);
 
     Plateforme plateformesLevel2[tailleLvl2] = {plateformeLevel2,plateforme1Level2,plateforme2Level2,plateforme3Level2,plateforme4Level2};
 
-    Level level2 = creerLevel(tailleLvl2, nbJoueurLvl2, plateformesLevel2, joueursLevel2, listeArriveLevel2, "Level 2");
+    Level level2 = creerLevel(tailleLvl2, nbJoueurLvl2, plateformesLevel2, joueursLevel2, listeArriveLevel2, "Level 2", couleurBackgroundLevel2, 1);
     
     Level jeuxGeorges[nbLevel] = {level1, level2};
 
@@ -265,7 +291,7 @@ int main(int argc, char** argv)
 
         if(!isQuadTreeCreated){
             
-            qt = creerQuadTree((WINDOW_WIDTH)/2,  (WINDOW_HEIGHT)/2, WINDOW_WIDTH+400, WINDOW_HEIGHT+400, new Plateforme[jeuxGeorges[levelActif].taille], jeuxGeorges[levelActif].taille, jeuxGeorges[levelActif].taille,  0);
+            qt = creerQuadTree((WINDOW_WIDTH)/2,  (WINDOW_HEIGHT)/2, WINDOW_WIDTH+2000, WINDOW_HEIGHT+2000, new Plateforme[jeuxGeorges[levelActif].taille], jeuxGeorges[levelActif].taille, jeuxGeorges[levelActif].taille,  0);
             
             result = nullptr;
 
@@ -298,7 +324,7 @@ int main(int argc, char** argv)
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        glScalef(0.7,0.7,0);
+        
 
         result = chercherPlateforme(qt, jeuxGeorges[levelActif].joueurs[0]);
 
@@ -334,11 +360,18 @@ int main(int argc, char** argv)
 
        //SDL_RenderCopy(renderer, texture, NULL, &rectangleTitre);
 
+       glScalef(jeuxGeorges[levelActif].scale,jeuxGeorges[levelActif].scale,0);
+
+       afficherBackground(jeuxGeorges[levelActif], WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        updateBackground(background2, camera);
+
+    
        glPushMatrix();
        
        cameraTranslate(camera);
 
-       updateBackground(background, camera);
+       //updateBackground(background, camera);
 
         for(int i = 0; i < jeuxGeorges[levelActif].nbJoueurs; i++){
             afficherJoueur(jeuxGeorges[levelActif].joueurs[i], jeuxGeorges[levelActif]);
@@ -378,7 +411,7 @@ int main(int argc, char** argv)
         }
 
         //j'affiche la quadTree
-
+        /*
         drawQuadTree(qt);
          if(result){
                
@@ -389,7 +422,10 @@ int main(int argc, char** argv)
                 afficherPlateforme(result->plateformes[i]);
 
             }
-         }
+         }*/
+
+                updateBackground(background, camera);
+
 
         if(verifieVictoire(jeuxGeorges[levelActif])){
             printf("victory\n");

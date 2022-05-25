@@ -13,9 +13,9 @@
 #include "headers/systeme.h"
 #include "headers/level.h"
 
-Level creerLevel(int taille, int nbJoueurs, Plateforme plateforme[], Joueur joueurs[], Arrive arrives[], char *nom){
+Level creerLevel(int taille, int nbJoueurs, Plateforme plateforme[], Joueur joueurs[], Arrive arrives[], char *nom, ColorRGB backgroundColor, float scale){
 
-    Level newLevel = {taille, nbJoueurs, plateforme, joueurs, arrives, nom};
+    Level newLevel = {taille, nbJoueurs, plateforme, joueurs, arrives, nom, backgroundColor, scale};
 
     return newLevel;
 
@@ -56,5 +56,21 @@ bool verifieVictoire(Level level){
     }
     
     return true;
+
+}
+
+void afficherBackground(Level level, int width, int height){
+
+        glPushMatrix();
+
+            glTranslated(width/2,height/2,0);
+
+            glScalef(width*3,height*3,0);
+
+            glColor3f(level.backgroundColor.r,level.backgroundColor.g,level.backgroundColor.b);
+            
+            drawSquare(1);
+
+        glPopMatrix();
 
 }

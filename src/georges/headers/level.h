@@ -66,15 +66,20 @@ typedef struct Level {
     Joueur* joueurs;
     Arrive* arrives;
     char *nom;
+    ColorRGB backgroundColor;
+    float scale;
+
 
 } Level;
 
-Level creerLevel(int taille, int nbJoueurs, Plateforme plateforme[], Joueur joueurs[], Arrive arrives[], char *nom);
+Level creerLevel(int taille, int nbJoueurs, Plateforme plateforme[], Joueur joueurs[], Arrive arrives[], char *nom, ColorRGB backgroundColor, float scale);
 
 void switchJoueur(Level * level);
 
 void supprimerJoueur(Level * level);
 
 bool verifieVictoire(Level level);
+
+void afficherBackground(Level level, int width, int height);
 
 #endif /* LEVEL_H */

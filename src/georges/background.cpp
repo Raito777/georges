@@ -12,14 +12,14 @@
 #include "headers/systeme.h"
 #include "headers/background.h"
 
-Cercle createCercle(float x, float y, float radius, ColorRGB color){
+Cercle createCercle(float x, float y, float radius, ColorRGB color, int z){
 
     std::random_device dev;
     std::mt19937 rng(dev());
-    std::uniform_real_distribution<float> z(30,60); // distribution in range [1, 6]
+ // distribution in range [1, 6]
 
 
-    Cercle newCercle = {x, y, z(rng), radius, color};
+    Cercle newCercle = {x, y, z, radius, color};
 
     return newCercle;
 
