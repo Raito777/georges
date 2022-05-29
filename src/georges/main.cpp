@@ -420,7 +420,7 @@ int main(int argc, char** argv)
 
             for(int i = 0; i < jeuxGeorges[levelActif].taille; i++){
                 //printf("le rect bg : %f\n", jeuxGeorges[0].lvl[i].x);
-                insererPlateforme(&qt, jeuxGeorges[levelActif].lvl[i], 6);
+                insererPlateforme(&qt, jeuxGeorges[levelActif].lvl[i], 3);
 
             }
             isQuadTreeCreated = true;
