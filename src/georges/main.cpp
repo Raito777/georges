@@ -400,7 +400,7 @@ int main(int argc, char** argv)
     int nbLevel = 5;
 
 
-    Level jeuxGeorges[nbLevel] = {levelFin, level2, level3, level4, levelFin};
+    Level jeuxGeorges[nbLevel] = {level1, level2, level3, level4, levelFin};
 
 
     QuadTree qt;
