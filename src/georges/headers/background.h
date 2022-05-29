@@ -39,5 +39,8 @@ void updateBackground(Background background, Camera camera);
 
 void afficherCercle(Cercle cercle, Camera camera);
 
-void loadTexture(const char* filename, GLuint textureID[10], int numTexture);
+GLuint loadTexture(const char* filename);
+
+void drawTexture(float weight, float height, float x, float y,char* adresse);
+
 #endif /* BACKGROUND_h */

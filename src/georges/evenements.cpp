@@ -11,9 +11,51 @@
 #include "headers/systeme.h"
 #include "headers/plateforme.h"
 #include "headers/level.h"
-//#include "headers/menu.h"
+#include "headers/menu.h"
 
-void checkEvenements(int *gameLoop, Joueur *joueur, Level level, float deltaTime,bool *ismenu){
+
+void checkMenu(int* gameLoop, int* phase , int* etat){
+    SDL_Event e;
+
+    while(SDL_PollEvent(&e)) 
+{
+
+    if(e.type == SDL_KEYDOWN){
+
+        switch(e.key.keysym.sym){
+                *gameLoop=0;
+                break;
+            case SDLK_p:
+                Menu(e,etat,phase,gameLoop);
+                AfficheMenu(*phase);
+                break;
+
+            default:
+                break;
+
+        }
+    }
+if(e.type == SDL_KEYUP){
+
+        switch(e.key.keysym.sym){
+                *gameLoop = 0;
+                break;
+            case SDLK_p:
+                Menu(e,etat,phase,gameLoop);
+                AfficheMenu(*phase);
+                break;
+                
+            default:
+                break;
+
+        }
+    }
+    
+
+    }
+}
+
+void checkEvenements(int *gameLoop, Joueur *joueur, Level level, float deltaTime){
 
 SDL_Event e;
 
@@ -81,15 +123,6 @@ while(SDL_PollEvent(&e))
             case SDLK_s:
                 break;
 
-            case SDLK_p:
-            printf("ah cest deja ca\n");
-                    if(*(ismenu)==true){
-                        *(ismenu) = false;
-                    }
-                    else{
-                        *(ismenu) = true;
-                    }
-            break;
             default:
                 break;
 

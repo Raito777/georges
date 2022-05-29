@@ -120,17 +120,20 @@ int main(int argc, char** argv)
 
     int gameLoop = 1;
     
-    bool ismenu =false;
+    int phase = 1;
 
     int levelActif = 0;
 
     int nbLevel = 2;
 
     int menu = 0;
+    
+    int etat;
 
     bool isQuadTreeCreated = false;
 
     GLuint textureID[360];
+
 
     
 
@@ -160,25 +163,64 @@ int main(int argc, char** argv)
     }
 
     Background background = createBackground(nbCercle, listeCercle);
+    /*-----------------LEVEL 1-------------------------------*/
+    int tailleLvl0 = 100;
 
-
-    /*-------------------LEVEL 1 --------------------------------*/
+    int nbJoueurLvl0 = 1;
 
     ColorRGB couleurPlateforme = createColor(0.8,0.8,1);
 
-    Joueur joueur = creerJoueur(WINDOW_WIDTH/2, 340,10,30, 1, createColor(0.7,0.4,0.2));
+    Joueur joueurlevel0 = creerJoueur(WINDOW_WIDTH/2-200,110,20,60, 1, createColor(0.7,0.4,0.2));
 
-    Joueur joueur1 = creerJoueur(WINDOW_WIDTH/2-30, 210,30,30, 2, createColor(0.4,0.4,0.6));
+    Arrive arrivelevel0 = creerArrive(WINDOW_WIDTH/2,930,joueurlevel0.largeur,joueurlevel0.hauteur,joueurlevel0.id,joueurlevel0.color);
 
-    Joueur joueur2 = creerJoueur(WINDOW_WIDTH/2+30, 210,40,20, 3, createColor(0.1,0.8,0.4));
+    Camera camera = creerCamera(joueurlevel0.x, joueurlevel0.y);
 
-    Arrive arrive = creerArrive(WINDOW_WIDTH/2,520,joueur.largeur,joueur.hauteur,joueur.id,joueur.color);
+    Plateforme plateformelevel0 = creerPlateforme(WINDOW_WIDTH/2-200,-100,200,WINDOW_HEIGHT/4,couleurPlateforme);
+
+    Plateforme plateforme1level0 = creerPlateforme(WINDOW_WIDTH/2-400,0,200,WINDOW_HEIGHT*2,couleurPlateforme);
+
+    Plateforme plateforme2level0 = creerPlateforme(WINDOW_WIDTH/2,-25,200,WINDOW_HEIGHT/2,couleurPlateforme);
+
+    Plateforme plateforme3level0 = creerPlateforme(WINDOW_WIDTH/2+200,50,200,WINDOW_HEIGHT/2+WINDOW_HEIGHT/4,couleurPlateforme);
+
+    Plateforme plateforme4level0 = creerPlateforme(WINDOW_WIDTH/2+400,150,200,WINDOW_HEIGHT,couleurPlateforme);
+
+    Plateforme plateforme5level0 = creerPlateforme(WINDOW_WIDTH/2+600,200,200,WINDOW_HEIGHT*3,couleurPlateforme);
+
+    Plateforme plateforme6level0 = creerPlateforme(WINDOW_WIDTH/2+470,720,60,60,couleurPlateforme);
+
+    Plateforme plateforme7level0 = creerPlateforme(WINDOW_WIDTH/2-200,750,800,WINDOW_HEIGHT/2,couleurPlateforme);
+
+    Plateforme plateforme8level0 = creerPlateforme(WINDOW_WIDTH/2+240,625,100,50,couleurPlateforme);
+
+    Plateforme plateforme9level0 = creerPlateforme(WINDOW_WIDTH/2+240,875,100,50,couleurPlateforme);
+
+
+    Plateforme plateformesLevel0[tailleLvl0] = {plateformelevel0,plateforme1level0,plateforme2level0,plateforme3level0,plateforme4level0,plateforme5level0,plateforme6level0,plateforme7level0,plateforme8level0,plateforme9level0};
+
+    Joueur joueursLevel0[nbJoueurLvl0] = {joueurlevel0};
+
+    Arrive arriveLevel0[nbJoueurLvl0] = {arrivelevel0};
+
+    Level level0 = creerLevel(tailleLvl0, nbJoueurLvl0, plateformesLevel0, joueursLevel0, arriveLevel0, "Level 0");
+
+
+    /*-------------------LEVEL 2 --------------------------------*/
+
+    Joueur joueur = creerJoueur(WINDOW_WIDTH/2, 345,10,30, 1, createColor(0.7,0.4,0.2));
+
+    Joueur joueur1 = creerJoueur(WINDOW_WIDTH/2-30, 215,30,30, 2, createColor(0.4,0.4,0.6));
+
+    Joueur joueur2 = creerJoueur(WINDOW_WIDTH/2+30, 215,40,20, 3, createColor(0.1,0.8,0.4));
+
+    Arrive arrive = creerArrive(WINDOW_WIDTH/2,525,joueur.largeur,joueur.hauteur,joueur.id,joueur.color);
 
     Arrive arrive1 = creerArrive(WINDOW_WIDTH/2-280,310,joueur1.largeur,joueur1.hauteur,joueur1.id,joueur1.color);
 
-    Arrive arrive2 = creerArrive(WINDOW_WIDTH/2+300,307,joueur2.largeur,joueur2.hauteur,joueur2.id, joueur2.color);
+    Arrive arrive2 = creerArrive(WINDOW_WIDTH/2+300,320,joueur2.largeur,joueur2.hauteur,joueur2.id, joueur2.color);
 
-    Camera camera = creerCamera(joueur.x, joueur.y);
+    //Camera camera = creerCamera(joueur.x, joueur.y);
 
     Plateforme plateforme = creerPlateforme(WINDOW_WIDTH/2, -100, 200,  WINDOW_HEIGHT, couleurPlateforme);
 
@@ -212,7 +254,7 @@ int main(int argc, char** argv)
 
     //printf("%s\n", level1.nom);
 
-    /*----------------------LEVEL 2--------------------------------*/
+    /*----------------------LEVEL 3--------------------------------*/
     int tailleLvl2 = 5;
 
     int nbJoueurLvl2 = 3;
@@ -250,8 +292,52 @@ int main(int argc, char** argv)
     Plateforme plateformesLevel2[tailleLvl2] = {plateformeLevel2,plateforme1Level2,plateforme2Level2,plateforme3Level2,plateforme4Level2};
 
     Level level2 = creerLevel(tailleLvl2, nbJoueurLvl2, plateformesLevel2, joueursLevel2, listeArriveLevel2, "Level 2");
+
+    /*----------------------LEVEL 4 celui de la mort qui tue--------------------------------*/
+
+    int tailleLvl3 = 100;
+
+    int nbJoueurLvl3 = 1;
+
+    Joueur joueurlevel3 = creerJoueur(WINDOW_WIDTH/2,210,20,60, 1, createColor(0.7,0.4,0.2));
+
+    Arrive arrivelevel3 = creerArrive(WINDOW_WIDTH/2+400,750,joueurlevel3.largeur,joueurlevel3.hauteur,joueurlevel3.id,joueurlevel3.color);
+
+    Plateforme plateformelevel3 = creerPlateforme(WINDOW_WIDTH/2,-100,100,100,couleurPlateforme);
+
+    Plateforme plateforme1level3 = creerPlateforme(WINDOW_WIDTH/2-200,100,80,70,couleurPlateforme);
+
+    Plateforme plateforme2level3 = creerPlateforme(WINDOW_WIDTH/2-400,200,80,70,couleurPlateforme);
+
+    Plateforme plateforme3level3 = creerPlateforme(WINDOW_WIDTH/2-250,360,80,70,couleurPlateforme);
+
+    Plateforme plateforme4level3 = creerPlateforme(WINDOW_WIDTH/2-400,520,80,70,couleurPlateforme);
+
+    Plateforme plateforme5level3 = creerPlateforme(WINDOW_WIDTH/2-200,690,80,70,couleurPlateforme);
+
+    Plateforme plateforme6level3 = creerPlateforme(WINDOW_WIDTH/2,560,80,70,couleurPlateforme);
+
+    Plateforme plateforme7level3 = creerPlateforme(WINDOW_WIDTH/2+100,350,80,70,couleurPlateforme);
+
+    Plateforme plateforme8level3 = creerPlateforme(WINDOW_WIDTH/2+280,190,80,70,couleurPlateforme);
+
+    Plateforme plateforme9level3 = creerPlateforme(WINDOW_WIDTH/2+450,345,80,70,couleurPlateforme);
+
+    Plateforme plateforme10level3 = creerPlateforme(WINDOW_WIDTH/2+530,550,80,70,couleurPlateforme);
+
+    Plateforme plateforme11level3 = creerPlateforme(WINDOW_WIDTH/2+400,690,80,70,couleurPlateforme);
+
+    Plateforme plateformesLevel3[tailleLvl3] = {plateformelevel3,plateforme1level3,plateforme2level3,plateforme3level3,plateforme4level3,plateforme5level3,plateforme6level3,plateforme7level3,plateforme8level3,plateforme9level3,plateforme10level3,plateforme11level3};
+
+    Joueur joueursLevel3[nbJoueurLvl3] = {joueurlevel3};
+
+    Arrive arriveLevel3[nbJoueurLvl3] = {arrivelevel3};
+
+    Level level3 = creerLevel(tailleLvl3, nbJoueurLvl3, plateformesLevel3, joueursLevel3, arriveLevel3, "Level 3");
     
-    Level jeuxGeorges[nbLevel] = {level1, level2};
+    Level jeuxGeorges[nbLevel] = {level0,level1,level2,level3};
+
+
 
 
     QuadTree qt;
@@ -262,6 +348,7 @@ int main(int argc, char** argv)
     {
      
         //printf("ca marche\n");
+        checkMenu(&gameLoop, &phase, &etat);
 
         if(!isQuadTreeCreated){
             
@@ -312,14 +399,7 @@ int main(int argc, char** argv)
 
 
         
-        //printf("%i\n",ismenu);
-        if(ismenu==true){
-            DrawMenu(menu,textureID,WINDOW_WIDTH,WINDOW_HEIGHT);
-            checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime,&ismenu);
-            
-            
-        }
-       else{
+        
         
 
 
@@ -358,7 +438,7 @@ int main(int argc, char** argv)
         }
 
         
-        checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime,&ismenu);
+        checkEvenements(&gameLoop, &(jeuxGeorges[levelActif].joueurs[0]), jeuxGeorges[levelActif], deltaTime);
 
 
 
@@ -405,7 +485,7 @@ int main(int argc, char** argv)
 
     }
 
-    } 
+    
 
 
     SDL_FreeSurface(imageTitre);

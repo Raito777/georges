@@ -55,20 +55,57 @@ void updateBackground(Background background, Camera camera){
     }
 }
 
-void loadTexture(const char* filename, GLuint textureID[10], int numTexture){
+
+void drawTexture(float weight, float height, float x, float y,char* adresse){
+
+    char* a;
+    GLuint textID=loadTexture(a);
+
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glBindTexture(GL_TEXTURE_2D,textID);
+
+    glPushMatrix();
+        glTranslatef(x,y,0);
+        glScalef(weight,height,0);
+        glBegin(GL_QUADS);
+            glTexCoord2f(0,0);
+            glVertex2f(-0.5,0.5);
+
+            glTexCoord2f(1,0);
+            glVertex2f(0.5,0.5);
+
+            glTexCoord2f(1,1);
+            glVertex2f(0.5,-0.5);
+
+            glTexCoord2f(0,1);
+            glVertex2f(-0.5,-0.5);
+        glEnd();
+    glPopMatrix();
+
+    glBindTexture(GL_TEXTURE_2D,0);
+    glDisable(GL_TEXTURE_2D);
+    glDeleteTextures(1,&textID);
+
+}
+
+GLuint loadTexture(const char* filename){
   
   SDL_Surface* image;
+  GLuint textureID;
   image = IMG_Load(filename);
 
   if(image == NULL){
     printf("Error : image not found : %s\n", filename);
   }
 
-  glGenTextures(1, textureID);
-  glBindTexture(GL_TEXTURE_2D, numTexture);
+  glGenTextures(1, &textureID);
+  glBindTexture(GL_TEXTURE_2D,textureID);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
   // TODO : Supprimer les texture lors de la fermeture du prog
   //glDeleteTextures(10, &textureID);
   SDL_FreeSurface(image);
+  return textureID;
 }
