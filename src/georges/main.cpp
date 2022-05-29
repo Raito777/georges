@@ -274,7 +274,7 @@ int main(int argc, char** argv)
 
     Plateforme plateformesLevel2[tailleLvl2] = {plateformeLevel2,plateforme1Level2,plateforme2Level2,plateforme3Level2,plateforme4Level2};
 
-    Level level2 = creerLevel(tailleLvl2, nbJoueurLvl2, plateformesLevel2, joueursLevel2, listeArriveLevel2, "Level 2", couleurBackgroundLevel2, 0.8);
+    Level level2 = creerLevel(tailleLvl2, nbJoueurLvl2, plateformesLevel2, joueursLevel2, listeArriveLevel2, "Level 2", couleurBackgroundLevel2, 1);
     
 
     /*------------------LEVEL 3 --------------------------------------*/
@@ -315,7 +315,7 @@ int main(int argc, char** argv)
 
     Arrive arriveLevel0[nbJoueurLvl0] = {arrivelevel0};
 
-    Level level3 = creerLevel(tailleLvl0, nbJoueurLvl0, plateformesLevel0, joueursLevel0, arriveLevel0, "Level 0", couleurBackgroundLevel2, 0.8);
+    Level level3 = creerLevel(tailleLvl0, nbJoueurLvl0, plateformesLevel0, joueursLevel0, arriveLevel0, "Level 0", couleurBackgroundLevel2, 1);
 
     /*---------------------------------------- LEVEL 4 ------------------------------------------------*/
 
