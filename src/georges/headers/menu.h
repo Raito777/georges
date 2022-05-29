@@ -9,9 +9,13 @@
 #include <math.h>
 #include <SDL2/SDL_image.h> 
 #include <time.h>
+#include <iostream>
+#include <random>
 
 
-void DrawMenu(int menu,GLuint textureID[380],int windowWidth, int windowHeight);
-void DrawIntro(int * img, int * intro);
-void DrawIntrolvl(int * img);
+
+void Menu(SDL_Event e,int* gamestate,int* etat,int* gameLoop);
+void AfficheMenu(int etat);
+void AffichePause(int etat);
+void Pause(SDL_Event e,int* gamestate,int* etat);
 #endif

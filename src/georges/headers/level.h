@@ -68,6 +68,7 @@ typedef struct Level {
     char *nom;
     ColorRGB backgroundColor;
     float scale;
+    float transitionY;
 
 
 } Level;
@@ -81,5 +82,7 @@ void supprimerJoueur(Level * level);
 bool verifieVictoire(Level level);
 
 void afficherBackground(Level level, int width, int height);
+
+void afficherTransitionIn(int width, int height, Level* level, float deltaTime);
 
 #endif /* LEVEL_H */

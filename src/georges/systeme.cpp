@@ -20,7 +20,7 @@ void onWindowResized(unsigned int width, unsigned int height)
     // This will anchor the camera to the lower left corner of the screen
     // Camera will be centered on (screenWidth/2, screenHeight/2)
 
-    glOrtho( 0, width/(width/1280), 0, height/(height/720), -1, 1 );
+    glOrtho( 0, width/(width/1024), 0, height/(height/576), -1, 1 );
     // This will anchor the camera to the center of the screen
     // Camera will be centered on (0,0)
     //glOrtho( -width/2.f, width/2.f, -height/2.f, height/2.f, -1, 1 );

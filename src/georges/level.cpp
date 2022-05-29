@@ -15,7 +15,7 @@
 
 Level creerLevel(int taille, int nbJoueurs, Plateforme plateforme[], Joueur joueurs[], Arrive arrives[], char *nom, ColorRGB backgroundColor, float scale){
 
-    Level newLevel = {taille, nbJoueurs, plateforme, joueurs, arrives, nom, backgroundColor, scale};
+    Level newLevel = {taille, nbJoueurs, plateforme, joueurs, arrives, nom, backgroundColor, scale, -500};
 
     return newLevel;
 
@@ -74,3 +74,23 @@ void afficherBackground(Level level, int width, int height){
         glPopMatrix();
 
 }
+
+void afficherTransitionIn(int width, int height, Level* level, float deltaTime){
+
+    float x = width;
+
+        glPushMatrix();
+
+            glTranslated(x,level->transitionY,0);
+
+            glScalef(width*2,height+300,0);
+
+            glColor3f(0,0,0);
+            
+            drawSquare(1);
+            
+        glPopMatrix();
+
+
+}
+
