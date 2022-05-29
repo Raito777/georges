@@ -1,6 +1,6 @@
 # georges
 
-1)Clone le projet
+1)Cloner le projet
 
 2)Créer un dossier bin s'il n'existe pas
 
