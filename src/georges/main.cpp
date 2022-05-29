@@ -396,11 +396,82 @@ int main(int argc, char** argv)
 
     /*-----------------------------------*/
 
+/*---------------------------LEVEL DEBUT-----------------------*/
 
-    int nbLevel = 5;
+    int tailleLvlDebut = 100;
+
+    int nbJoueurLvlDebut = 1;
+
+    ColorRGB couleurPlateformeDebut = createColor(0.2,0.8,0.2);
+    ColorRGB couleurPlateformeDebut2 = createColor(0.8,0.8,0.2);
+    ColorRGB couleurPlateformeDebut3 = createColor(0.8,0.2,0.2);
+    ColorRGB couleurPlateformeDebut4 = createColor(0,0,1);
 
 
-    Level jeuxGeorges[nbLevel] = {level1, level2, level3, level4, levelFin};
+    Joueur joueurlevelDebut= creerJoueur(WINDOW_WIDTH/2-475,450,10,30, 1, createColor(0.8,0.2,0.2));
+
+    Arrive arrivelevelDebut = creerArrive(WINDOW_WIDTH/2-320,400,joueurlevelDebut.largeur,joueurlevelDebut.hauteur,joueurlevelDebut.id,joueurlevelDebut.color);
+
+// lettre q
+    Plateforme plateforme0levelDebut = creerPlateforme(WINDOW_WIDTH/2-400,WINDOW_HEIGHT/2,200,50,couleurPlateformeDebut);
+
+    Plateforme plateforme1levelDebut = creerPlateforme(WINDOW_WIDTH/2-475,WINDOW_HEIGHT/2-100,50,200,couleurPlateformeDebut);
+
+    Plateforme plateforme2levelDebut = creerPlateforme(WINDOW_WIDTH/2-400,WINDOW_HEIGHT/2-200,200,50,couleurPlateformeDebut);
+
+    Plateforme plateforme3levelDebut = creerPlateforme(WINDOW_WIDTH/2-325,WINDOW_HEIGHT/2-135,50,300,couleurPlateformeDebut);
+//lettre s
+
+    Plateforme plateforme4levelDebut = creerPlateforme(WINDOW_WIDTH/2-100,WINDOW_HEIGHT/2,200,50,couleurPlateformeDebut2);
+
+    Plateforme plateforme5levelDebut = creerPlateforme(WINDOW_WIDTH/2-175,WINDOW_HEIGHT/2-25,50,100,couleurPlateformeDebut2);
+
+    Plateforme plateforme6levelDebut = creerPlateforme(WINDOW_WIDTH/2-100,WINDOW_HEIGHT/2-100,200,50,couleurPlateformeDebut2);
+
+    Plateforme plateforme7levelDebut = creerPlateforme(WINDOW_WIDTH/2-25,WINDOW_HEIGHT/2-125,50,100,couleurPlateformeDebut2);
+
+    Plateforme plateforme8levelDebut = creerPlateforme(WINDOW_WIDTH/2-100,WINDOW_HEIGHT/2-200,200,50,couleurPlateformeDebut2);
+//lettre d
+
+     Plateforme plateforme9levelDebut = creerPlateforme(WINDOW_WIDTH/2+200,WINDOW_HEIGHT/2+50,150,50,couleurPlateformeDebut3);
+
+    Plateforme plateforme10levelDebut = creerPlateforme(WINDOW_WIDTH/2+125,WINDOW_HEIGHT/2-75,50,300,couleurPlateformeDebut3);
+
+    Plateforme plateforme11levelDebut = creerPlateforme(WINDOW_WIDTH/2+200,WINDOW_HEIGHT/2-200,150,50,couleurPlateformeDebut3);
+
+    Plateforme plateforme12levelDebut = creerPlateforme(WINDOW_WIDTH/2+275,WINDOW_HEIGHT/2-75,50,200,couleurPlateformeDebut3);
+//lettre z
+
+    Plateforme plateforme13levelDebut = creerPlateforme(WINDOW_WIDTH/2-100,WINDOW_HEIGHT/2+300,200,50,couleurPlateformeDebut4);
+
+    Plateforme plateforme14levelDebut = creerPlateforme(WINDOW_WIDTH/2-25,WINDOW_HEIGHT/2+250,50,100,couleurPlateformeDebut4);
+
+    Plateforme plateforme15levelDebut = creerPlateforme(WINDOW_WIDTH/2-100,WINDOW_HEIGHT/2+200,100,50,couleurPlateformeDebut4);
+
+    Plateforme plateforme16levelDebut = creerPlateforme(WINDOW_WIDTH/2-175,WINDOW_HEIGHT/2+150,50,100,couleurPlateformeDebut4);
+
+    Plateforme plateforme17levelDebut = creerPlateforme(WINDOW_WIDTH/2-100,WINDOW_HEIGHT/2+100,200,50,couleurPlateformeDebut4);
+
+
+    Plateforme plateformesLevelDebut[tailleLvlDebut] = {plateforme0levelDebut,plateforme1levelDebut,plateforme2levelDebut,plateforme3levelDebut,plateforme4levelDebut,plateforme5levelDebut,plateforme6levelDebut,plateforme7levelDebut,plateforme8levelDebut,plateforme9levelDebut,plateforme10levelDebut,plateforme11levelDebut,plateforme12levelDebut,plateforme13levelDebut,plateforme14levelDebut,plateforme15levelDebut,plateforme16levelDebut,plateforme17levelDebut};
+
+    Joueur joueursLevelDebut[nbJoueurLvlDebut] = {joueurlevelDebut};
+
+    Arrive arrivesLevelDebut[nbJoueurLvlDebut] = {arrivelevelDebut};
+
+    ColorRGB couleurBackgroundDebut = createColor(0.3,0.5,0.8);
+
+
+    Level levelDebut = creerLevel(tailleLvlDebut, nbJoueurLvlDebut, plateformesLevelDebut, joueursLevelDebut, arrivesLevelDebut, "Level Debut", couleurBackgroundDebut, 1);
+
+
+
+
+
+    int nbLevel = 6;
+
+
+    Level jeuxGeorges[nbLevel] = {levelDebut, level1, level2, level3, level4, levelFin};
 
 
     QuadTree qt;
